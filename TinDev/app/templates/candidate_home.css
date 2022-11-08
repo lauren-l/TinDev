@@ -1,0 +1,34 @@
+main {
+    padding: 20px;
+}
+
+.profile-container {
+    justify-content: center;
+    padding: 10px;
+}
+
+.search-bar {
+    padding: 5px;
+}
+
+.jobs-container {
+    padding: 10px;
+}
+
+.job-container {
+    border: solid;
+    padding: 10px;
+    margin: 5px;
+}
+
+.skills {
+    display: flex;
+}
+
+.filter-container {
+    padding:10px;
+}
+
+.btn {
+    margin:2px;
+}
