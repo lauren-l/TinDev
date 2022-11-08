@@ -13,3 +13,6 @@ def signup_candidate(request):
 
 def signup_recruiter(request):
     return render(request, 'app/signup_recruiter.html')
+
+def dashboard_recruiter(request):
+    return render(request, 'app/recruiter_dashboard.html')

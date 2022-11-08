@@ -1,0 +1,138 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="{% static 'recruiter_db_style.css' %}">
+    <title>Dashboard | TinDev</title>
+</head>
+
+<body>
+    <main>
+        <div>
+            <div style="background-color: rgb(253, 253, 253); width:85%; height:100vh; float:left;">
+                <div class="post-content">
+                    <div class="search-bar">
+                        <h2>Search Posts</h2>
+                        <span>
+                            <input class='skinny align-middle' type="text" id="post_search_keyword"
+                                placeholder="Enter Keyword" size="75">
+                            <button id="search-button" class="btn btn-primary btn-sm align-middle">Search</button>
+                        </span>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <div style="width:15%; float:left; padding-right:1rem">
+                                <p style="padding:2rem 1rem 1rem 2rem; text-align: center;">Insert Image Here</p>
+                            </div>
+                            <div style="width:85%; float:right; padding-right:1rem">
+                                <span class="job-title">
+                                    <h3 class="card-title align-middle" style="display:inline; padding-right: 1rem;">Job
+                                        Title
+                                    </h3>
+                                    <h6 class="align-bottom" style="display:inline">Company</h6>
+                                </span>
+                                <p class="card-text">Job Description
+                                </p>
+                                <span>
+                                    <h5 class="align-middle" style="display: inline">Skills:</h5>
+                                    <a href="#" class="btn btn btn-outline-primary btn-sm align-middle">Skill</a>
+                                    <a href="#" class="btn btn btn-outline-primary btn-sm align-middle">Skill</a>
+                                    <a href="#" class="btn btn btn-outline-primary btn-sm align-middle">Skill</a>
+                                    <a href="#" class="btn btn btn-outline-primary btn-sm align-middle">Skill</a>
+                                    <a href="#" class="btn btn btn-outline-primary btn-sm align-middle">Skill</a>
+                                    <a href="#" class="btn btn btn-outline-primary btn-sm align-middle">Skill</a>
+                                    <button id="search-button" class="btn btn-primary btn-sm align-middle"
+                                        style="float: right">Search</button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="background-color: rgb(255, 255, 255); width:15%; height:100vh; float:right; padding-right:1rem">
+                <h3 align="center">Job Filters</h3>
+
+                <div class="card-item">
+                    <article class="card">
+                        <header class="card-header">
+                            <h6 class="filter-title">Post Filters</h6>
+                        </header>
+                        <div class="filter-content">
+                            <div class="card-body">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="Check1">
+                                    <label class="custom-control-label">My Posts</label>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+
+                <div class="card-item">
+                    <article class="card">
+                        <header class="card-header">
+                            <h6 class="filter-title">Post Status</h6>
+                        </header>
+                        <div class="filter-content">
+                            <div class="card-body">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="post-status-active">
+                                    <label class="custom-control-label">Active</label>
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="post-status-inactive">
+                                    <label class="custom-control-label">Inactive</label>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+                <div class="card-item">
+                    <article class="card">
+                        <header class="card-header">
+                            <h6 class="filter-title">Interested Candidates</h6>
+                        </header>
+                        <div class="filter-content">
+                            <div class="card-body">
+                                <div class="form-row">
+                                    <input type="range" class="form-range" id="candidateRange" step="1">
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+                <div class="card-item">
+                    <div class="filter-content" align="center">
+                        <div class="card-body">
+                            <div class="form-row">
+                                <input class="btn btn-primary" type="Clear Filters" value="Reset">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    </main>
+    <hr>
+    <footer>
+        <p>Footer</p>
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+
+</body>
+
+</html>
