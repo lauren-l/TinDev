@@ -1,0 +1,16 @@
+div.card-item {
+    margin-bottom: 0.5rem
+}
+
+h6.filter-title {
+    text-align: center
+}
+
+div.search-bar {
+    padding-bottom: 2rem;
+    width: 80%;
+}
+
+div.post-content {
+    padding: 0rem 3rem
+}
