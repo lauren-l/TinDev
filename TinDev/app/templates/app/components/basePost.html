@@ -1,0 +1,24 @@
+<div class="card">
+    <div class="card-body">
+        <div style="width:15%; float:left; padding-right:1rem">
+            <img style="padding:2rem 1rem 1rem 2rem; text-align: center;" />
+        </div>
+        <div style="width:85%; float:right; padding-right:1rem">
+            <span class="job-title">
+                <h3 class="card-title align-middle" style="display:inline; padding-right: 1rem;">
+                    {{jobTitle}}
+                </h3>
+                <h6 class="align-bottom" style="display:inline">{{jobSource}}</h6>
+            </span>
+            <p class="card-text">{{jobDesc}}</p>
+            <span>
+                <h5 class="align-middle" style="display: inline">Skills:</h5>
+                {% for skill in skills %}
+                <a href="#" class="btn btn btn-outline-primary btn-sm align-middle">{{ skill }}</a>
+                {% endfor %}
+                <button id="search-button" class="btn btn-primary btn-sm align-middle" style="float: right">View
+                    Applicants</button>
+            </span>
+        </div>
+    </div>
+</div>

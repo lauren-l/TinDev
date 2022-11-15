@@ -15,4 +15,5 @@ def signup_recruiter(request):
     return render(request, 'app/signup_recruiter.html')
 
 def dashboard_recruiter(request):
-    return render(request, 'app/recruiter_dashboard.html')
+    skills = ['html', 'python', 'css']
+    return render(request, 'app/recruiter_dashboard.html', {'jobTitle': 'worker', 'jobSource': 'google', 'jobDesc': 'know how to code', 'skills': skills})
