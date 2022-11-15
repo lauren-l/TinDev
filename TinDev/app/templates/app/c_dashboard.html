@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+        <link rel="stylesheet" href="../style.css">
+        <link rel="stylesheet" href="../candidate_home.css">
+
+        <title>Sign Up | TinDev</title>
+</head>
+
+<body>
+    <header>
+        <ul class="nav-list">
+            <li class="nav-item"><a href="#"><h5>Home</h5></a></li>
+            <li class="nav-item"><a href="#"><h5>Work</h5></a></li>
+            <li class="nav-item"><a href="#"><h5>Inbox</h5></a></li>
+        </ul>
+    </header>
+    <div class="profile-container">
+        <div class="profile-info">
+            <p>Name Here</p>
+            <p>Role Here</p>
+        </div>
+        <ul class="profile-skills">
+            <li class="profile-skill">Skill 1</li>
+            <li class="profile-skill">Skill 2</li>
+            <li class="profile-skill">Skill 3</li>
+        </ul>
+        <button>Log Out</button>
+    </div>
+
+    <div class="jobs-container">
+        <h2>Search Jobs</h2>
+        <div class="search-bar">
+            <input class='skinny align-middle' type="text" id="post_search_keyword"
+                placeholder="Search Here">
+            <button id="search-button" class="btn btn-primary btn-sm align-middle">Search</button>
+        </div>
+        <div class="job-container">
+            <p>Role</p>
+            <p>Description</p>
+            <p>Skills</p>
+            <div id="skills">
+                <button type="button" class="btn btn-warning">AWS</button>
+                <button type="button" class="btn btn-warning">React</button>
+                <button type="button" class="btn btn-warning">HTML, CSS, JS</button>
+            </div> <br>
+            <button>Apply</button>
+        </div>
+        <div class="job-container">
+            <p>Role</p>
+            <p>Description</p>
+            <div id="skills">
+                <button type="button" class="btn btn-warning">AWS</button>
+                <button type="button" class="btn btn-warning">React</button>
+                <button type="button" class="btn btn-warning">HTML, CSS, JS</button>
+            </div> <br>
+            <button>Apply</button>
+        </div>
+    </div>
+
+    <div class="filter-container">
+        <ul class="filter-list">
+            <li class="filter-item">View Filter</li>
+            <li class="filter-item">Type</li>
+                <input type="checkbox" id="type" name="type" value="Part">
+                <label for="type">Part Time</label><br>
+                <input type="checkbox" id="type" name="type" value="Part">
+                <label for="type">Full Time</label><br>
+            <li class="filter-item">Location</li>
+                <input type="checkbox" id="location" name="location" value="Part">
+                <label for="location">X</label><br>
+                <input type="checkbox" id="location" name="location" value="Part">
+                <label for="location">Y</label><br>
+        </ul>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+</body>
+
+</html>
