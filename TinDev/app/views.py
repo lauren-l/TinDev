@@ -67,7 +67,6 @@ def dashboard_candidate(request):
     return render(request, 'app/candidate_dashboard.html')
 
 def dashboard_recruiter(request):
-    #print(Job.objects.all()[])
     data = list(Job.objects.values("title", "company", "description", "skills", "city", "state"))
     for item in data:
         item["skills"] = list(item["skills"].split(","))

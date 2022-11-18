@@ -1,9 +1,13 @@
 div.card-item {
-    margin-bottom: 0.5rem
+    margin-bottom: 0.5rem;
+}
+
+div.filter-card {
+    margin-right: 1rem;
 }
 
 h6.filter-title {
-    text-align: center
+    text-align: center;
 }
 
 div.search-bar {
@@ -12,5 +16,5 @@ div.search-bar {
 }
 
 div.post-content {
-    padding: 0rem 3rem
+    padding: 0rem 3rem;
 }
