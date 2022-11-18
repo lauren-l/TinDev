@@ -25,6 +25,7 @@ class Recruiter(models.Model):
     password = models.CharField(max_length=50)
 
 class Job(models.Model):
+    id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=50)
     job_type = models.CharField(max_length=50)
     city = models.CharField(max_length=50)
