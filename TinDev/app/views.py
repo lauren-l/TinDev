@@ -8,7 +8,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from .forms import RSignUpForm, CSignUpForm
-from .models import Candidate, Recruiter
+from .models import Candidate, Recruiter, Job
 
 # Create your views here.
 def home(request):
@@ -64,5 +64,9 @@ def signup_recruiter(request):
     return render(request, 'app/signup_recruiter.html', {'form': form})
 
 def dashboard_recruiter(request):
-    skills = ['html', 'python', 'css']
-    return render(request, 'app/recruiter_dashboard.html', {'jobTitle': 'worker', 'jobSource': 'google', 'jobDesc': 'know how to code', 'skills': skills})
+    #print(Job.objects.all()[])
+    data = list(Job.objects.values("title", "company", "description", "skills", "city", "state"))
+    for item in data:
+        item["skills"] = list(item["skills"].split(","))
+
+    return render(request, 'app/recruiter_dashboard.html', {"jobs": data})
