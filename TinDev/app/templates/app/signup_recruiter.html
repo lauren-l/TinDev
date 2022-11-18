@@ -48,18 +48,13 @@
     </nav>
     <main>
         <H1 id='signup-header'>Recruiter Sign Up</H1>
-        <form>
-            <div class="signup-container">
-                <div class="sign-up">
-                    <input class ='skinny' type="text" id="f_name" name="f_name" placeholder="First Name" required><br>
-                    <input class ='skinny' type="text" id="l_name" name="l_name" placeholder="Last Name" required><br>
-                    <input class ='skinny' type="text" id="username" name="username" placeholder="Username" required><br>
-                    <input class ='skinny'type="password" id="password" name="password" placeholder="Password" required><br>
-                    <input class ='skinny' type="text" id="zipcode" name="zipcode" placeholder="Zipcode" required minlength="5" maxlength="5"><br>
-                    <input class ='skinny' type="text" id="company" name="company" placeholder="Company" required><br>
-                </div>
 
-            </div>
+        <form action="" method="POST">
+            {% csrf_token %}
+            
+            {{ form }}
+            
+
             <input type="submit" value="Go">
         </form>
 
