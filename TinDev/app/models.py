@@ -34,5 +34,8 @@ class Job(models.Model):
     description = models.TextField()
     company = models.CharField(max_length=50)
     expiration = models.DateTimeField()
-    status = models.CharField(max_length=50) # active or inactive
+    inactive = models.BooleanField()
+    active = models.BooleanField()
+    author = models.CharField(max_length=50)
+    numCandidates = models.IntegerField()
 
