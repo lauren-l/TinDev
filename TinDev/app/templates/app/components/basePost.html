@@ -21,6 +21,7 @@
                 {% for skill in job.skills %}
                 <a class="btn btn btn-outline-primary btn-sm align-middle">{{ skill }}</a>
                 {% endfor %}
+                <p>{{ job.expiration }}</p>
                 <button id="search-button" class="btn btn-primary btn-sm align-middle" style="float: right">View
                     Applicants</button>
             </span>

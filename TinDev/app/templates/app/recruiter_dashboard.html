@@ -60,64 +60,79 @@
 
             <div style="background-color: rgb(255, 255, 255); width:15%; float:right">
                 <h3 align="center" style="margin-right:1rem">Job Filters</h3>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="card-item filter-card">
+                        <article class="card">
+                            <header class="card-header">
+                                <h6 class="filter-title">Post Filters</h6>
+                            </header>
+                            <div class="filter-content">
+                                <div class="card-body">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" name="my-post">
+                                        <label class="custom-control-label">My Posts</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
 
-                <div class="card-item filter-card">
-                    <article class="card">
-                        <header class="card-header">
-                            <h6 class="filter-title">Post Filters</h6>
-                        </header>
-                        <div class="filter-content">
-                            <div class="card-body">
-                                <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" id="Check1">
-                                    <label class="custom-control-label">My Posts</label>
+                    <div class="card-item filter-card">
+                        <article class="card">
+                            <header class="card-header">
+                                <h6 class="filter-title">Post Status</h6>
+                            </header>
+                            <div class="filter-content">
+                                <div class="card-body">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" name="post-status-active"
+                                            value="{{ active }}">
+                                        <label class="custom-control-label">Active</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" name="post-status-inactive"
+                                            value="{{ inactive }}">
+                                        <label class="custom-control-label">Inactive</label>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </article>
-                </div>
-
-                <div class="card-item filter-card">
-                    <article class="card">
-                        <header class="card-header">
-                            <h6 class="filter-title">Post Status</h6>
-                        </header>
-                        <div class="filter-content">
-                            <div class="card-body">
-                                <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" id="post-status-active">
-                                    <label class="custom-control-label">Active</label>
-                                </div>
-                                <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" id="post-status-inactive">
-                                    <label class="custom-control-label">Inactive</label>
+                        </article>
+                    </div>
+                    <div class="card-item filter-card">
+                        <article class="card">
+                            <header class="card-header">
+                                <h6 class="filter-title">Interested Candidates</h6>
+                            </header>
+                            <div class="filter-content">
+                                <div class="card-body">
+                                    <div class="form-row">
+                                        <input type="range" class="form-range" min="0" max="100"
+                                            value="{{ numCandidates }}" name="candidateRange" step="1"
+                                            oninput="this.nextElementSibling.value = this.value">
+                                        <output>{{ numCandidates }}</output><output>+</output>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </article>
-                </div>
-                <div class="card-item filter-card">
-                    <article class="card">
-                        <header class="card-header">
-                            <h6 class="filter-title">Interested Candidates</h6>
-                        </header>
+                        </article>
+                    </div>
+                    <div class="card-item filter-card">
                         <div class="filter-content">
-                            <div class="card-body">
-                                <div class="form-row">
-                                    <input type="range" class="form-range" id="candidateRange" step="1">
-                                </div>
+                            <div class="form-row">
+                                <input class="btn btn-primary" type="submit" value="Filter" style="width:100%">
                             </div>
-                        </div>
-                    </article>
-                </div>
-                <div class="card-item filter-card">
-                    <div class="filter-content">
-                        <div class="form-row">
-                            <input class="btn btn-primary" type="Clear Filters" value="Reset" style="width:100%">
                         </div>
                     </div>
-                </div>
+                    <div class="card-item filter-card">
+                        <div class="filter-content">
+                            <div class="form-row">
+                                <input class="btn btn-primary" type="reset" value="Reset" style="width:100%">
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </div>
+        </div>
     </main>
     <hr>
     <footer>

@@ -9,6 +9,7 @@ from django.contrib import messages
 from django.http import HttpResponseRedirect
 from .forms import RSignUpForm, CSignUpForm
 from .models import Candidate, Recruiter, Job
+from django.db.models import Q
 
 # Create your views here.
 def home(request):
@@ -67,8 +68,26 @@ def dashboard_candidate(request):
     return render(request, 'app/candidate_dashboard.html')
 
 def dashboard_recruiter(request):
-    data = list(Job.objects.values("title", "company", "description", "skills", "city", "state"))
+    context = {}
+    context["post"] = False
+    context["active"] = True
+    context["inactive"] = False
+    context["numCandidates"] = 0
+
+    if request.method == 'POST':
+        context["post"] = False if request.POST.get('my-post') == None else True
+        context["active"] = False if request.POST.get('post-status-active') == None else True
+        context["inactive"] = False if request.POST.get('post-status-inactive') == None else True
+        context["numCandidates"] = request.POST.get('candidateRange')
+    
+    data = list(Job.objects.filter(
+        Q(active=context["active"]) | Q(inactive=context["inactive"]),
+        numCandidates__gte = context["numCandidates"]
+    ).values("title", "company", "description", "skills", "city", "state", "expiration"))
+        
     for item in data:
         item["skills"] = list(item["skills"].split(","))
+    
+    context["jobs"] = data
 
-    return render(request, 'app/recruiter_dashboard.html', {"jobs": data})
+    return render(request, 'app/recruiter_dashboard.html', context=context)
