@@ -80,13 +80,21 @@ p {
   background: #fdfdfd;
 }
 
+.btn-success {
+  border-radius: 20px;
+  border-color: #635bff;
+  color: #635bff;
+  background: #fdfdfd;
+}
+
 .login-button {
   display: block;
   width: 100%;
 }
 
 .navbar {
-    padding: 20px;
-    padding-left: 30px;
-    padding-right: 30px;
+  padding: 20px;
+  padding-left: 30px;
+  padding-right: 30px;
 }
+

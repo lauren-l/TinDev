@@ -9,28 +9,33 @@ from django.contrib import messages
 from django.http import HttpResponseRedirect
 from .forms import RSignUpForm, CSignUpForm
 from .models import Candidate, Recruiter, Job
+from django.db import connection
 
 # Create your views here.
 def home(request):
 
     if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
+        l_username = request.POST.get('username')
+        l_password = request.POST.get('password')
 
-        user = authenticate(username=username, password=password)
+        recruiter = Recruiter.objects.filter(username=l_username, password=l_password)
+        candidate = Candidate.objects.filter(username=l_username, password=l_password)
 
-        if user is not None:
-            login(request, user)
-            redirect("/recruiter-dashboard")
+        if recruiter:
+            request.session['username'] = l_username
+            return redirect("/recruiter_dashboard")
+        elif candidate:
+            request.session['username'] = l_username
+            return redirect("/candidate_dashboard")
         else:
-            messages.info(request, 'Username or password is incorrect')
-            return render(request, 'app/index.html', context)
+            # messages.info(request, 'Username or password is incorrect')
+            messages.add_message(request, messages.INFO, 'Username or password is incorrect')
+            return render(request, 'app/index.html')
 
-    context = {}
-    return render(request, 'app/index.html', context)
+    return render(request, 'app/index.html')
 
 def logout_user(request):
-    logout(request)
+    request.session.flush()
     return redirect('home/')
 
 def signup_candidate(request):
