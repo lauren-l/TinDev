@@ -73,6 +73,8 @@ def dashboard_recruiter(request):
     context["active"] = True
     context["inactive"] = False
     context["numCandidates"] = 0
+    context["activeCheckedStatus"] = "checked"
+    context["inactiveCheckedStatus"] = "unchecked"
 
     if request.method == 'POST':
         context["post"] = False if request.POST.get('my-post') == None else True
@@ -83,11 +85,15 @@ def dashboard_recruiter(request):
     data = list(Job.objects.filter(
         Q(active=context["active"]) | Q(inactive=context["inactive"]),
         numCandidates__gte = context["numCandidates"]
-    ).values("title", "company", "description", "skills", "city", "state", "expiration"))
+    ).values("title", "company", "description", "skills", "city", "state"))
         
     for item in data:
         item["skills"] = list(item["skills"].split(","))
     
     context["jobs"] = data
+    context["activeCheckedStatus"] = "checked" if context["active"] else "unchecked"
+    context["inactiveCheckedStatus"] = "checked" if context["inactive"] else "unchecked"
+
+
 
     return render(request, 'app/recruiter_dashboard.html', context=context)
