@@ -9,28 +9,34 @@ from django.contrib import messages
 from django.http import HttpResponseRedirect
 from .forms import RSignUpForm, CSignUpForm
 from .models import Candidate, Recruiter, Job
+from django.db.models import Q
+from django.db import connection
 
 # Create your views here.
 def home(request):
 
     if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
+        l_username = request.POST.get('username')
+        l_password = request.POST.get('password')
 
-        user = authenticate(username=username, password=password)
+        recruiter = Recruiter.objects.filter(username=l_username, password=l_password)
+        candidate = Candidate.objects.filter(username=l_username, password=l_password)
 
-        if user is not None:
-            login(request, user)
-            redirect("/recruiter-dashboard")
+        if recruiter:
+            request.session['username'] = l_username
+            return redirect("/recruiter_dashboard")
+        elif candidate:
+            request.session['username'] = l_username
+            return redirect("/candidate_dashboard")
         else:
-            messages.info(request, 'Username or password is incorrect')
-            return render(request, 'app/index.html', context)
+            # messages.info(request, 'Username or password is incorrect')
+            messages.add_message(request, messages.INFO, 'Username or password is incorrect')
+            return render(request, 'app/index.html')
 
-    context = {}
-    return render(request, 'app/index.html', context)
+    return render(request, 'app/index.html')
 
 def logout_user(request):
-    logout(request)
+    request.session.flush()
     return redirect('home/')
 
 def signup_candidate(request):
@@ -67,9 +73,49 @@ def dashboard_candidate(request):
     return render(request, 'app/candidate_dashboard.html')
 
 def dashboard_recruiter(request):
-    #print(Job.objects.all()[])
-    data = list(Job.objects.values("title", "company", "description", "skills", "city", "state"))
+    context = {}
+
+    # set default post fitlers
+    context["myPosts"] = False
+    context["active"] = True
+    context["inactive"] = False
+    context["numCandidates"] = 0
+    context["myPostsCheckedStatus"] = "unchecked"
+    context["activeCheckedStatus"] = "checked"
+    context["inactiveCheckedStatus"] = "unchecked"
+
+    if request.method == 'POST':
+        context["myPosts"] = False if request.POST.get('my-post') == None else True
+        context["active"] = False if request.POST.get('post-status-active') == None else True
+        context["inactive"] = False if request.POST.get('post-status-inactive') == None else True
+        context["numCandidates"] = request.POST.get('candidateRange')
+    
+    if context["active"] and not context["inactive"]: # only active posts
+        data = list(Job.objects.filter(
+            Q(active=context["active"]),
+            numCandidates__gte = context["numCandidates"]
+        ).values("title", "company", "description", "skills", "city", "state"))
+    elif context["inactive"] and not context["active"]: # only inactive posts
+        data = list(Job.objects.filter(
+            Q(inactive=context["inactive"]),
+            numCandidates__gte = context["numCandidates"]
+        ).values("title", "company", "description", "skills", "city", "state"))
+    elif context["active"] and context["inactive"]:
+        data = list(Job.objects.filter(
+            numCandidates__gte = context["numCandidates"]
+        ).values("title", "company", "description", "skills", "city", "state"))
+    else:
+        data = []
+
+        
     for item in data:
         item["skills"] = list(item["skills"].split(","))
+    
+    context["jobs"] = data
+    context["activeCheckedStatus"] = "checked" if context["active"] else "unchecked"
+    context["inactiveCheckedStatus"] = "checked" if context["inactive"] else "unchecked"
+    context["myPostsCheckedStatus"] = "checked" if context["myPosts"] else "unchecked"
 
-    return render(request, 'app/recruiter_dashboard.html', {"jobs": data})
+
+
+    return render(request, 'app/recruiter_dashboard.html', context=context)

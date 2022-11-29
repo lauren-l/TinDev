@@ -25,6 +25,7 @@ class Recruiter(models.Model):
     password = models.CharField(max_length=50)
 
 class Job(models.Model):
+    id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=50)
     job_type = models.CharField(max_length=50)
     city = models.CharField(max_length=50)
@@ -33,5 +34,8 @@ class Job(models.Model):
     description = models.TextField()
     company = models.CharField(max_length=50)
     expiration = models.DateTimeField()
-    status = models.CharField(max_length=50) # active or inactive
+    inactive = models.BooleanField()
+    active = models.BooleanField()
+    author = models.CharField(max_length=50)
+    numCandidates = models.IntegerField()
 

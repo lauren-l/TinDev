@@ -12,12 +12,37 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/recruiter_dashboard.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
     <title>Dashboard | TinDev</title>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <img src="{% static 'images/tindev_combomark.png' %}" alt="" width="150px" class="d-inline-block">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse nav-div" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Features</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Pricing</a>
+                    </li>
+                </ul>
+            </div>
+            <button type="button" class="btn btn-secondary btn-block" onclick="location.href='/logout'">Log out</button>
+        </div>
+    </nav>
 </head>
 
 <body>
     <main>
-        <div>
-            <div style="background-color: rgb(253, 253, 253); width:85%; height:100vh; float:left;">
+        <div style="background-color: rgb(253, 253, 253); padding-top:2rem">
+            <div style="background-color: rgb(253, 253, 253); width:85%; float:left">
                 <div class="post-content">
                     <div class="search-bar">
                         <h2>Search Posts</h2>
@@ -33,67 +58,82 @@
                 </div>
             </div>
 
-            <div style="background-color: rgb(255, 255, 255); width:15%; height:100vh; float:right; padding-right:1rem">
-                <h3 align="center">Job Filters</h3>
+            <div style="background-color: rgb(255, 255, 255); width:15%; float:right">
+                <h3 align="center" style="margin-right:1rem">Job Filters</h3>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="card-item filter-card">
+                        <article class="card">
+                            <header class="card-header">
+                                <h6 class="filter-title">Post Filters</h6>
+                            </header>
+                            <div class="filter-content">
+                                <div class="card-body">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" name="my-post"
+                                            value="{{ myPosts }}" {{myPostsCheckedStatus}}>
+                                        <label class="custom-control-label">My Posts</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
 
-                <div class="card-item">
-                    <article class="card">
-                        <header class="card-header">
-                            <h6 class="filter-title">Post Filters</h6>
-                        </header>
-                        <div class="filter-content">
-                            <div class="card-body">
-                                <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" id="Check1">
-                                    <label class="custom-control-label">My Posts</label>
+                    <div class="card-item filter-card">
+                        <article class="card">
+                            <header class="card-header">
+                                <h6 class="filter-title">Post Status</h6>
+                            </header>
+                            <div class="filter-content">
+                                <div class="card-body">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" name="post-status-active"
+                                            value="{{ active }}" {{activeCheckedStatus}}>
+                                        <label class="custom-control-label">Active</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" name="post-status-inactive"
+                                            value="{{ inactive }}" {{inactiveCheckedStatus}}>
+                                        <label class="custom-control-label">Inactive</label>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </article>
-                </div>
-
-                <div class="card-item">
-                    <article class="card">
-                        <header class="card-header">
-                            <h6 class="filter-title">Post Status</h6>
-                        </header>
-                        <div class="filter-content">
-                            <div class="card-body">
-                                <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" id="post-status-active">
-                                    <label class="custom-control-label">Active</label>
-                                </div>
-                                <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" id="post-status-inactive">
-                                    <label class="custom-control-label">Inactive</label>
+                        </article>
+                    </div>
+                    <div class="card-item filter-card">
+                        <article class="card">
+                            <header class="card-header">
+                                <h6 class="filter-title">Interested Candidates</h6>
+                            </header>
+                            <div class="filter-content">
+                                <div class="card-body">
+                                    <div class="form-row">
+                                        <input type="range" class="form-range" min="0" max="100"
+                                            value="{{ numCandidates }}" name="candidateRange" step="1"
+                                            oninput="this.nextElementSibling.value = this.value">
+                                        <output>{{ numCandidates }}</output><output>+</output>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </article>
-                </div>
-                <div class="card-item">
-                    <article class="card">
-                        <header class="card-header">
-                            <h6 class="filter-title">Interested Candidates</h6>
-                        </header>
+                        </article>
+                    </div>
+                    <div class="card-item filter-card">
                         <div class="filter-content">
-                            <div class="card-body">
-                                <div class="form-row">
-                                    <input type="range" class="form-range" id="candidateRange" step="1">
-                                </div>
-                            </div>
-                        </div>
-                    </article>
-                </div>
-                <div class="card-item">
-                    <div class="filter-content" align="center">
-                        <div class="card-body">
                             <div class="form-row">
-                                <input class="btn btn-primary" type="Clear Filters" value="Reset">
+                                <input class="btn btn-primary" type="submit" value="Filter" style="width:100%">
                             </div>
                         </div>
                     </div>
-                </div>
+                    <div class="card-item filter-card">
+                        <div class="filter-content">
+                            <div class="form-row">
+                                <input class="btn btn-primary" type="reset" value="Reset" style="width:100%">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
     </main>
     <hr>
     <footer>
