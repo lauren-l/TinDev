@@ -27,6 +27,28 @@
 </head>
 
 <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <img src="{% static 'images/tindev_combomark.png' %}" alt="" width="150px" class="d-inline-block">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse nav-div justify-content-center" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/candidate_dashboard">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Offers</a>
+                    </li>
+                </ul>
+            </div>
+            <button type="button" class="btn btn-secondary btn-block" onclick="location.href='/logout'">Log out</button>
+        </div>
+    </nav>
     <main>
         <div class="row">
             <div class="col">
@@ -87,9 +109,9 @@
                         </div>
 
                         <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                        <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal"
                             data-bs-target="#exampleModal">Learn More</button>
-                        <button type="button" class="btn btn-success btn-sm">Apply</button>
+                        <button type="button" class="btn btn-primary btn-sm">Apply</button>
                         <!-- Modal -->
                         <div class="modal fade" id="exampleModal" data-bs-backdrop="static" data-bs-keyboard="false"
                             tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -163,9 +185,9 @@
                             </div>
                         </div>
                         <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                        <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal"
                             data-bs-target="#exampleModal">Learn More</button>
-                        <button type="button" class="btn btn-success btn-sm">Apply</button>
+                        <button type="button" class="btn btn-primary btn-sm">Apply</button>
                         <!-- Modal -->
                         <div class="modal fade" id="exampleModal" data-bs-backdrop="static" data-bs-keyboard="false"
                             tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
