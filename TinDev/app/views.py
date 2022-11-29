@@ -74,22 +74,21 @@ def dashboard_candidate(request):
 
 def dashboard_recruiter(request):
     context = {}
-    context["post"] = False
+
+    # set default post fitlers
+    context["myPosts"] = False
     context["active"] = True
     context["inactive"] = False
     context["numCandidates"] = 0
+    context["myPostsCheckedStatus"] = "unchecked"
     context["activeCheckedStatus"] = "checked"
     context["inactiveCheckedStatus"] = "unchecked"
 
     if request.method == 'POST':
-        context["post"] = False if request.POST.get('my-post') == None else True
+        context["myPosts"] = False if request.POST.get('my-post') == None else True
         context["active"] = False if request.POST.get('post-status-active') == None else True
-        print(request.POST.get('post-status-active'))
-        print(request.POST.get('post-status-inactive'))
         context["inactive"] = False if request.POST.get('post-status-inactive') == None else True
         context["numCandidates"] = request.POST.get('candidateRange')
-        print(context["active"])
-        print(context["inactive"])
     
     if context["active"] and not context["inactive"]: # only active posts
         data = list(Job.objects.filter(
@@ -115,6 +114,7 @@ def dashboard_recruiter(request):
     context["jobs"] = data
     context["activeCheckedStatus"] = "checked" if context["active"] else "unchecked"
     context["inactiveCheckedStatus"] = "checked" if context["inactive"] else "unchecked"
+    context["myPostsCheckedStatus"] = "checked" if context["myPosts"] else "unchecked"
 
 
 
