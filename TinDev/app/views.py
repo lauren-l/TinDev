@@ -84,13 +84,30 @@ def dashboard_recruiter(request):
     if request.method == 'POST':
         context["post"] = False if request.POST.get('my-post') == None else True
         context["active"] = False if request.POST.get('post-status-active') == None else True
+        print(request.POST.get('post-status-active'))
+        print(request.POST.get('post-status-inactive'))
         context["inactive"] = False if request.POST.get('post-status-inactive') == None else True
         context["numCandidates"] = request.POST.get('candidateRange')
+        print(context["active"])
+        print(context["inactive"])
     
-    data = list(Job.objects.filter(
-        Q(active=context["active"]) | Q(inactive=context["inactive"]),
-        numCandidates__gte = context["numCandidates"]
-    ).values("title", "company", "description", "skills", "city", "state"))
+    if context["active"] and not context["inactive"]: # only active posts
+        data = list(Job.objects.filter(
+            Q(active=context["active"]),
+            numCandidates__gte = context["numCandidates"]
+        ).values("title", "company", "description", "skills", "city", "state"))
+    elif context["inactive"] and not context["active"]: # only inactive posts
+        data = list(Job.objects.filter(
+            Q(inactive=context["inactive"]),
+            numCandidates__gte = context["numCandidates"]
+        ).values("title", "company", "description", "skills", "city", "state"))
+    elif context["active"] and context["inactive"]:
+        data = list(Job.objects.filter(
+            numCandidates__gte = context["numCandidates"]
+        ).values("title", "company", "description", "skills", "city", "state"))
+    else:
+        data = []
+
         
     for item in data:
         item["skills"] = list(item["skills"].split(","))
