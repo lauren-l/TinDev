@@ -87,25 +87,25 @@ def clean_zip(data):
 
 class RSignUpForm(forms.Form):
 
-    first_name = forms.CharField(help_text="First Name", max_length=50, required=True, validators=[clean_first_name, MaxLengthValidator(50)])
-    last_name = forms.CharField(help_text="Last Name", max_length=50,required=True, validators=[clean_last_name, MaxLengthValidator(50)])
-    username = forms.CharField(help_text="Username (At least 4 characters)", min_length=4, required=True, validators=[validate_slug, MaxLengthValidator(50)])
-    password = forms.CharField(help_text="Password (At least 8 characters)", min_length=8, required=True, validators=[validate_slug, MaxLengthValidator(50)], widget=forms.PasswordInput)
-    zip = forms.IntegerField(help_text="Zipcode", required=True, validators=[clean_zip])
-    company = forms.CharField(help_text="Company", max_length=50, required=True, validators=[validate_slug, MaxLengthValidator(50)])
+    first_name = forms.CharField(max_length=50, required=True, validators=[clean_first_name, MaxLengthValidator(50)])
+    last_name = forms.CharField(max_length=50,required=True, validators=[clean_last_name, MaxLengthValidator(50)])
+    username = forms.CharField(min_length=4, required=True, validators=[validate_slug, MaxLengthValidator(50)])
+    password = forms.CharField(min_length=8, required=True, validators=[validate_slug, MaxLengthValidator(50)], widget=forms.PasswordInput)
+    zip = forms.IntegerField(required=True, validators=[clean_zip])
+    company = forms.CharField(max_length=50, required=True, validators=[validate_slug, MaxLengthValidator(50)])
 
 
 # recruiter signup form
 
 class CSignUpForm(forms.Form):
-    first_name = forms.CharField(help_text="First Name", max_length=50, required=True, validators=[clean_first_name, MaxLengthValidator(50)])
-    last_name = forms.CharField(help_text="Last Name", max_length=50,required=True, validators=[clean_last_name, MaxLengthValidator(50)])
-    username = forms.CharField(help_text="Username (At least 4 characters)", min_length=4, required=True, validators=[validate_slug, MaxLengthValidator(50)])
-    password = forms.CharField(help_text="Password (At least 8 characters)", min_length=8, required=True, validators=[validate_slug, MaxLengthValidator(50)], widget=forms.PasswordInput)
-    zip = forms.IntegerField(help_text="Zipcode", required=True, validators=[clean_zip])
+    first_name = forms.CharField(max_length=50, required=True, validators=[clean_first_name, MaxLengthValidator(50)])
+    last_name = forms.CharField(max_length=50,required=True, validators=[clean_last_name, MaxLengthValidator(50)])
+    username = forms.CharField(min_length=4, required=True, validators=[validate_slug, MaxLengthValidator(50)])
+    password = forms.CharField(min_length=8, required=True, validators=[validate_slug, MaxLengthValidator(50)], widget=forms.PasswordInput)
+    zip = forms.IntegerField(required=True, validators=[clean_zip])
 
-    bio = forms.CharField(help_text="Bio", max_length=500, validators=[MaxLengthValidator(500)])
-    github = forms.URLField(help_text="Github Link", max_length=50, required=True, validators=[URLValidator, MaxLengthValidator(50)])
-    yoe = forms.ChoiceField(help_text="Years of Experience", choices = YOE_CHOICES, required=True)
-    education = forms.ChoiceField(help_text="Education", choices = EDU_CHOICES, required=True)
-    skills = forms.MultipleChoiceField(help_text="Skills", choices = SKILL_CHOICES, required=True)
+    bio = forms.CharField(max_length=500, required=False, validators=[MaxLengthValidator(500)])
+    github = forms.URLField(max_length=50, required=False, validators=[URLValidator, MaxLengthValidator(50)])
+    yoe = forms.ChoiceField(choices = YOE_CHOICES, required=True)
+    education = forms.ChoiceField(choices = EDU_CHOICES, required=False)
+    skills = forms.MultipleChoiceField(choices = SKILL_CHOICES, required=True)
