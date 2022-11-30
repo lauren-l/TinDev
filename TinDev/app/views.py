@@ -9,7 +9,6 @@ from django.contrib import messages
 from django.http import HttpResponseRedirect
 from .forms import RSignUpForm, CSignUpForm
 from .models import Candidate, Recruiter, Job
-from django.db.models import Q
 from django.db import connection
 
 # Create your views here.
@@ -92,26 +91,28 @@ def dashboard_recruiter(request):
     
     if context["active"] and not context["inactive"]: # only active posts
         data = list(Job.objects.filter(
-            Q(active=context["active"]),
+            active=True,
             numCandidates__gte = context["numCandidates"]
-        ).values("title", "company", "description", "skills", "city", "state", "coverImage"))
+        ).values("title", "company", "description", "skills", "city", "state", "coverImage", "active", "job_type", "numCandidates"))
     elif context["inactive"] and not context["active"]: # only inactive posts
         data = list(Job.objects.filter(
-            Q(inactive=context["inactive"]),
+            active=False,
             numCandidates__gte = context["numCandidates"]
-        ).values("title", "company", "description", "skills", "city", "state", "coverImage"))
+        ).values("title", "company", "description", "skills", "city", "state", "coverImage", "active", "job_type", "numCandidates"))
     elif context["active"] and context["inactive"]:
         data = list(Job.objects.filter(
             numCandidates__gte = context["numCandidates"]
-        ).values("title", "company", "description", "skills", "city", "state", "coverImage"))
+        ).values("title", "company", "description", "skills", "city", "state", "coverImage", "active", "job_type", "numCandidates"))
     else:
         data = []
 
         
 
     for item in data:
+        item["numCandidates"] = str(item["numCandidates"])
         item["coverImage"] = item["coverImage"].replace("app/static/", "")
         item["skills"] = list(item["skills"].split(","))
+        item["status"] = "Active" if item["active"] else "Inactive"
     
     context["jobs"] = data
     context["activeCheckedStatus"] = "checked" if context["active"] else "unchecked"

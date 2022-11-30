@@ -43,9 +43,12 @@
     <main>
         <div style="padding-top:2rem">
             <div style="width:85%; float:left">
+                <div style="padding: 0rem 3rem 1rem">
+                    <input class="btn btn-primary" value="Create New Post">
+                </div>
                 <div class="post-content">
                     {% for job in jobs %}
-                    {% include './components/basePost.html' with job=job %}
+                    {% include './components/recruiterPost.html' with job=job %}
                     {% endfor %}
                 </div>
             </div>
