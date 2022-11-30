@@ -38,4 +38,5 @@ class Job(models.Model):
     active = models.BooleanField()
     author = models.CharField(max_length=50)
     numCandidates = models.IntegerField()
+    coverImage = models.ImageField(upload_to ='app/static/images', default='../../static/images/errorImage.jpg')
 

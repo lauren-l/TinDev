@@ -1,9 +1,11 @@
+{% load static %}
 <div class="card" style="margin-bottom: 1rem">
     <div class="card-body">
-        <div style="width:15%; float:left; padding-right:1rem">
-            <img style="padding:2rem 1rem 1rem 2rem; text-align: center;" />
+        <div style="width:15%; float:left">
+            <img src="{% static job.coverImage %}" style="display:flex; justify-content:center;" width="100"
+                height="100" />
         </div>
-        <div style="width:85%; float:right; padding-right:1rem">
+        <div style="width:85%; float:right">
             <span class="job-title">
                 <h3 class="card-title align-middle" style="display:inline; padding-right: 1rem;">
                     {{ job.title }}

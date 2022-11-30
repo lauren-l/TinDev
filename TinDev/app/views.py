@@ -94,21 +94,23 @@ def dashboard_recruiter(request):
         data = list(Job.objects.filter(
             Q(active=context["active"]),
             numCandidates__gte = context["numCandidates"]
-        ).values("title", "company", "description", "skills", "city", "state"))
+        ).values("title", "company", "description", "skills", "city", "state", "coverImage"))
     elif context["inactive"] and not context["active"]: # only inactive posts
         data = list(Job.objects.filter(
             Q(inactive=context["inactive"]),
             numCandidates__gte = context["numCandidates"]
-        ).values("title", "company", "description", "skills", "city", "state"))
+        ).values("title", "company", "description", "skills", "city", "state", "coverImage"))
     elif context["active"] and context["inactive"]:
         data = list(Job.objects.filter(
             numCandidates__gte = context["numCandidates"]
-        ).values("title", "company", "description", "skills", "city", "state"))
+        ).values("title", "company", "description", "skills", "city", "state", "coverImage"))
     else:
         data = []
 
         
+
     for item in data:
+        item["coverImage"] = item["coverImage"].replace("app/static/", "")
         item["skills"] = list(item["skills"].split(","))
     
     context["jobs"] = data
