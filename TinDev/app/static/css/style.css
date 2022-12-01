@@ -1,5 +1,6 @@
 body {
   background: #f6f6f6;
+  width: 100vw;
 }
 
 h1 {
@@ -49,28 +50,32 @@ p {
 #login-divider {
   margin-top: 1rem;
   margin-bottom: 1rem;
-  border: 1 #f6f6f6;
+  border: #f6f6f6;
 }
 
 .btn-primary:active {
   background-color: #9892ff;
-  border: none;
+  color: #fdfdfd;
 }
 
 .btn-primary:hover {
-  background-color: #515151;
-  border: none;
+  border-radius: 20px;
+  border-color: #635bff;
+  color: #635bff;
+  background: #fdfdfd;
 }
 
 .btn-secondary:hover {
   background-color: #635bff;
   border-color: #635bff;
+  color: #fdfdfd;
 }
 
 .btn-primary {
+  background-color: #635bff;
+  color: #fdfdfd;
   border-radius: 20px;
-  background: #635bff;
-  border: none;
+  border-color: #635bff;
 }
 
 .btn-secondary {

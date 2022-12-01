@@ -1,0 +1,58 @@
+<!------ template for job post on Recruiter Profile ---->
+{% load static %}
+<div class="card" style="margin-bottom: 1rem">
+    <div class="card-body">
+        <!------ Job Cover Image ---->
+        <div style="width:15%; float:left">
+            <img src="{% static job.coverImage %}" style="display:flex; justify-content:center;" width="100"
+                height="100" />
+        </div>
+        <div style="width:85%; float:right">
+            <span class="job-title">
+                <h3 class="card-title align-middle" style="display:inline; padding-right: 1rem;">
+                    {{ job.title }}
+                </h3>
+                <h6 class="align-bottom" style="display:inline">{{ job.company }}</h6>
+                <!------ Drop down menu for individual post options ---->
+                <div class="btn-group dropdown" style="float:right">
+                    <button type="button" class="btn btn-secondary btn-sm dropdown-toggle align-top"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="#">Edit Post</a>
+                        <a class="dropdown-item" href="#">Delete Post</a>
+                    </div>
+                </div>
+            </span>
+            <div style="padding-bottom:0.5rem"></div>
+            <p class="card-text">{{ job.description }}</p>
+            <!------ Additional Job Info ---->
+            <span>
+                <h6 class="align-top" style="display: inline">Status:</h6>
+                <p class="align-top" style="display: inline">{{ job.status }}</p>
+            </span>
+            <br>
+            <span>
+                <h6 class="align-top" style="display: inline">Type:</h6>
+                <p class="align-top" style="display: inline">{{ job.job_type }}</p>
+            </span>
+            <br>
+            <span>
+                <h6 class="align-top" style="display: inline">Location:</h6>
+                <p class="align-top" style="display: inline">{{ job.city }}, {{ job.state }}</p>
+            </span>
+            <br>
+            <span>
+                <h6 class="align-middle" style="display: inline">Skills:</h6>
+                {% for skill in job.skills %}
+                <a class="btn btn btn-outline-primary btn-sm align-middle">{{ skill }}</a>
+                {% endfor %}
+
+                <!------ Button to view applicants ---->
+                <button id="search-button" class="btn btn-primary btn-sm align-middle" style="float: right">
+                    <p style="display: inline;">View </p> {{ job.numCandidates }} <p style="display: inline;">
+                        Applicants</p>
+                </button>
+            </span>
+        </div>
+    </div>
+</div>

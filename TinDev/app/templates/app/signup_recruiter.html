@@ -20,48 +20,58 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">
-                <img src="{% static 'images/tindev_combomark.png' %}" alt="" width="150px" class="d-inline-block">
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse nav-div" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Features</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Pricing</a>
-                    </li>
-                </ul>
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">
+                    <img src="{% static 'images/tindev_combomark.png' %}" alt="" width="150px" class="d-inline-block">
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse nav-div" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="#">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Features</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Pricing</a>
+                        </li>
+                    </ul>
+                </div>
+                <button type="button" class="btn btn-secondary btn-block" onclick="location.href='/logout'">Log out</button>
             </div>
-            <button type="button" class="btn btn-secondary btn-block" onclick="location.href='/logout'">Log out</button>
-        </div>
-    </nav>
-    <main>
-        <H1 id='signup-header'>Recruiter Sign Up</H1>
+        </nav>
+        <main>
+            <div id="header-div" class="center">
+                <H1 class="signup-header center">Recruiter Sign Up</H1>
+                <p class="instructions">* indicates required fields</p>
+            </div>
+            <div id="form-div" class="">
+                <form id="form-body" class="center" action="" method="POST">
+                    {% csrf_token %}
+    
+                    {{ form }}
+                    <div>
+                        <!-- placeholder div so that submit button can go in proper place-->
+                    </div>
+                    <div id="button-div">
+                        <button id="go-button" class="btn-primary" type="submit" class="center">Go</button>
+                    </div>
+                </form>
+            </div>
+            
 
-        <form action="" method="POST">
-            {% csrf_token %}
 
-            {{ form }}
-
-
-            <input type="submit" value="Go">
-        </form>
-
-
-    </main>
-    <hr>
-    <footer>
-    </footer>
+        </main>
+        <hr>
+        <footer>
+        </footer>
+    </div>
 
 </body>
 

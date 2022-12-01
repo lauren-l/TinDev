@@ -39,26 +39,21 @@
     </nav>
 </head>
 
-<body>
+<body style="background-color:rgb(253, 253, 253)">
     <main>
-        <div style="background-color: rgb(253, 253, 253); padding-top:2rem">
-            <div style="background-color: rgb(253, 253, 253); width:85%; float:left">
+        <div style="padding-top:2rem">
+            <div style="width:85%; float:left">
+                <div style="padding: 0rem 3rem 1rem">
+                    <input class="btn btn-primary" value="Create New Post">
+                </div>
                 <div class="post-content">
-                    <div class="search-bar">
-                        <h2>Search Posts</h2>
-                        <span>
-                            <input class='skinny align-middle' type="text" id="post_search_keyword"
-                                placeholder="Enter Keyword" size="75">
-                            <button id="search-button" class="btn btn-primary btn-sm align-middle">Search</button>
-                        </span>
-                    </div>
                     {% for job in jobs %}
-                    {% include './components/basePost.html' with job=job %}
+                    {% include './components/recruiterPost.html' with job=job %}
                     {% endfor %}
                 </div>
             </div>
 
-            <div style="background-color: rgb(255, 255, 255); width:15%; float:right">
+            <div style="width:15%; float:right">
                 <h3 align="center" style="margin-right:1rem">Job Filters</h3>
                 <form method="post">
                     {% csrf_token %}
@@ -121,13 +116,6 @@
                         <div class="filter-content">
                             <div class="form-row">
                                 <input class="btn btn-primary" type="submit" value="Filter" style="width:100%">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-item filter-card">
-                        <div class="filter-content">
-                            <div class="form-row">
-                                <input class="btn btn-primary" type="reset" value="Reset" style="width:100%">
                             </div>
                         </div>
                     </div>
