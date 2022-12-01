@@ -1,0 +1,32 @@
+main {
+    padding: 20px;
+}
+
+.container {
+    margin: 40px;
+}
+.row {
+    padding: 8px;
+}
+.test {
+    background-color: lightgrey;
+}
+.d-flex {
+    align-content: center !important;
+    padding: 10px;
+}
+
+.col-3 {
+    border-color: black;
+    border-style: solid none solid solid;
+}
+
+.col-9 {
+    border-color: black;
+    border-style: solid;
+    justify-content: center;
+}
+.offers {
+    border-color: black;
+    border-style: solid none none none;
+}

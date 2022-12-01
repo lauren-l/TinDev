@@ -16,14 +16,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <title>Dashboard | TinDev</title>
-    <script>
-        var button = document.getElementById("clickme"),
-            count = 0;
-        button.onclick = function () {
-            count += 1;
-            button.innerHTML = "Click me: " + count;
-        };
-    </script>
 </head>
 
 <body>
@@ -69,7 +61,7 @@
                 </div>
             </div>
 
-            <div class="col-6">
+            <div class="col-8">
                 <div class="jobs-container">
                     <h2>Search Jobs</h2>
                     <div class="search-bar">
@@ -77,160 +69,9 @@
                             placeholder="Search Here">
                         <button id="search-button" class="btn btn-primary btn-sm align-middle">Search</button>
                     </div>
-
-                    <div class="job-container">
-                        <div class="row">
-                            <div class="col-3">
-                                <img src="#" class="img-thumbnail">
-                            </div>
-                            <div class="col-6">
-                                <p>Role</p>
-                                <p>Description</p>
-                                <div id="skills">
-                                    <div class="d-flex flex-row align-items-center">
-                                        <p>Skills:
-                                            <button type="button" class="btn btn-outline-primary btn-sm">AWS</button>
-                                            <button type="button" class="btn btn-outline-primary btn-sm">React</button>
-                                            <button type="button" class="btn btn-outline-primary btn-sm">HTML, CSS,
-                                                JS</button>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="d flex-row">
-                                    <button type="button" class="btn btn-primary btn-sm"><i
-                                            class="fa-solid fa-thumbs-up"></i></button>
-                                    <p>Counter</p>
-                                    <button type="button" class="btn btn-primary btn-sm"><i
-                                            class="fa-solid fa-thumbs-down"></i></button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal"
-                            data-bs-target="#exampleModal">Learn More</button>
-                        <button type="button" class="btn btn-primary btn-sm">Apply</button>
-                        <!-- Modal -->
-                        <div class="modal fade" id="exampleModal" data-bs-backdrop="static" data-bs-keyboard="false"
-                            tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
-                                    </div>
-
-                                    <div class="modal-body">
-                                        <div class="row">
-                                            <div class="col-3">
-                                                <img src="#" class="img-thumbnail">
-                                            </div>
-                                            <div class="col-9">
-                                                <h4>Network Security Developer</h4>
-                                                <p>Full Time | New York, NY </p>
-                                            </div>
-                                            <p>If you're passionate about change, then this is the role to make a
-                                                significant technical and business impact while operating on one of the
-                                                largest cloud platforms in the world.</p>
-                                            <p>Skills:
-                                                <button type="button"
-                                                    class="btn btn-outline-primary btn-sm">AWS</button>
-                                                <button type="button"
-                                                    class="btn btn-outline-primary btn-sm">React</button>
-                                                <button type="button" class="btn btn-outline-primary btn-sm">HTML, CSS,
-                                                    JS</button>
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary"
-                                            data-bs-dismiss="modal">Close</button>
-                                        <button type="button" class="btn btn-primary">Apply</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="job-container">
-                        <div class="row">
-                            <div class="col-3">
-                                <img src="#" class="img-thumbnail">
-                            </div>
-                            <div class="col-6">
-                                <p>Role</p>
-                                <p>Description</p>
-                                <div id="skills">
-                                    <div class="d-flex flex-row align-items-center">
-                                        <p>Skills:
-                                            <button type="button" class="btn btn-outline-primary btn-sm">AWS</button>
-                                            <button type="button" class="btn btn-outline-primary btn-sm">React</button>
-                                            <button type="button" class="btn btn-outline-primary btn-sm">HTML, CSS,
-                                                JS</button>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="d flex-row">
-                                    <button type="button" class="btn btn-primary btn-sm"><i
-                                            class="fa-solid fa-thumbs-up"></i></button>
-                                    <p>counter</p>
-                                    <button type="button" class="btn btn-primary btn-sm"><i
-                                            class="fa-solid fa-thumbs-down"></i></button>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal"
-                            data-bs-target="#exampleModal">Learn More</button>
-                        <button type="button" class="btn btn-primary btn-sm">Apply</button>
-                        <!-- Modal -->
-                        <div class="modal fade" id="exampleModal" data-bs-backdrop="static" data-bs-keyboard="false"
-                            tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
-                                    </div>
-
-                                    <div class="modal-body">
-                                        <div class="row">
-                                            <div class="col-3">
-                                                <img src="#" class="img-thumbnail">
-                                            </div>
-                                            <div class="col-9">
-                                                <h4>Network Security Developer</h4>
-                                                <p>Full Time | New York, NY </p>
-                                            </div>
-                                            <p>If you're passionate about change, then this is the role to make a
-                                                significant technical and business impact while operating on one of the
-                                                largest cloud platforms in the world.</p>
-                                            <p>Skills:
-                                                <button type="button"
-                                                    class="btn btn-outline-primary btn-sm">AWS</button>
-                                                <button type="button"
-                                                    class="btn btn-outline-primary btn-sm">React</button>
-                                                <button type="button" class="btn btn-outline-primary btn-sm">HTML, CSS,
-                                                    JS</button>
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary"
-                                            data-bs-dismiss="modal">Close</button>
-                                        <button type="button" class="btn btn-primary">Apply</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    {% for job in jobs %}
+                    {% include './components/jobPost.html' with job=job %}
+                    {% endfor %}
                 </div>
             </div>
             <div class="col">
