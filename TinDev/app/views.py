@@ -68,7 +68,11 @@ def signup_recruiter(request):
         
     return render(request, 'app/signup_recruiter.html', {'form': form})
 
-def dashboard_candidate(request):
+def compute_cscore(jid, cid):
+    cscore = 0
+    return cscore
+
+def dashboard_candidate(request):    
     return render(request, 'app/candidate_dashboard.html')
 
 def dashboard_recruiter(request):
