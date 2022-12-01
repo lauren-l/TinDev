@@ -2,15 +2,42 @@ from django.shortcuts import render
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
 from django.views.generic import ListView, DetailView
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.models import User, auth
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from .forms import RSignUpForm, CSignUpForm
-from .models import Candidate, Recruiter, Job
+from .models import *
 from django.db import connection
 
+# CONSTANTS
+SKILL_CHOICES = (
+    ("1", "Python"),
+    ("2", "Tableau"),
+    ("3", "SQL"),
+    ("4", "Java"),
+    ("5", "C++"),
+    ("6", "C"),
+    ("7", "Go"),
+    ("8", "PHP"),
+    ("9", "R"),
+    ("10", "Swift"),
+    ("11", "HTML"),
+    ("12", "CSS"),
+    ("13", "JavaScript"),
+    ("14", "AWS"),
+    ("15", "Bash"),
+    ("16", "Perl"),
+    ("17", "Azure"),
+    ("18", "React.js"),
+    ("19", "MySQL"),
+    ("20", "Machine Learning"),
+    ("21", "Vue.js"),
+    ("22", "C#"),
+    ("23", "Natual Language Processing"),
+    ("24", "Docker")
+)
 # Create your views here.
 def home(request):
 
@@ -22,10 +49,10 @@ def home(request):
         candidate = Candidate.objects.filter(username=l_username, password=l_password)
 
         if recruiter:
-            request.session['username'] = l_username
+            request.session['uid'] = recruiter[0].id
             return redirect("/recruiter_dashboard")
         elif candidate:
-            request.session['username'] = l_username
+            request.session['uid'] = candidate[0].id
             return redirect("/candidate_dashboard")
         else:
             # messages.info(request, 'Username or password is incorrect')
@@ -68,13 +95,53 @@ def signup_recruiter(request):
         
     return render(request, 'app/signup_recruiter.html', {'form': form})
 
+# this function demonstrates candate interest & calculates compatibility score upon button click
+def submit_application(request):
+    if request.method == 'GET':
+        candidate_id = int(request.session['uid'])
+        job_id = request.GET['jid']
 
-def compute_cscore(jid, cid):
-    cscore = 0
-    return cscore
+        # checking if already applied
+        if Applications.objects.filter(job_id=job_id, candidate_id=candidate_id):
+            return HttpResponse("Already applied")
+        
+        # haven't applied yet
+        print('havent applied')
+        job = Job.objects.filter(id=job_id)[0]
+        job_description = job.description
+        recruiter_id = job.author
+        num_candidates = job.numCandidates
+        candidate = Candidate.objects.filter(id=candidate_id)[0]
+        skills = candidate.skills.split(",")
+        yoe = candidate.yoe
+
+        # updating num candidates of job
+        job.numCandidates = job.numCandidates + 1
+        job.save()
+
+        # calculating compatibility score
+        # skill overlap: 50%
+        # experience: 50%
+            # (yoe) / (num_candidates + yoe)
+            # more candidates => higher yoe => higher compatibility
+            # less candidates => lower yoe => higher compatibility
+        # calculations:
+            # evaluate skill_overlap and experience to be out of 100, then take the average of the 2
+            # resulting compatibility score should also be out of 100
+
+        skill_overlap = max(30, (len(skills) / len(SKILL_CHOICES)) * 100)
+        experience = max(30, (yoe / (num_candidates + yoe)) * 100)
+        cscore = (skill_overlap + experience) // 2
+        
+        application = Applications.objects.create(job_id=job_id, candidate_id=request.session['uid'], compatibility_score=cscore)
+        return HttpResponse("Success")
+    
+    else: 
+        print('heres the error')
+        return HttpResponse("Request method is not a GET")
 
 def dashboard_candidate(request):
-    jobData = list(Job.objects.values("title", "company", "description", "skills", "city", "state", "job_type", "expiration"))
+    jobData = list(Job.objects.values("title", "company", "description", "skills", "city", "state", "job_type", "expiration", "id"))
     for item in jobData:
         item["skills"] = list(item["skills"].split(","))
     return render(request, 'app/candidate_dashboard.html', {"jobs": jobData})
@@ -115,8 +182,6 @@ def dashboard_recruiter(request):
     else:
         data = []
 
-        
-
     for item in data:
         item["numCandidates"] = str(item["numCandidates"])
         item["coverImage"] = item["coverImage"].replace("app/static/", "")
@@ -127,8 +192,6 @@ def dashboard_recruiter(request):
     context["activeCheckedStatus"] = "checked" if context["active"] else "unchecked"
     context["inactiveCheckedStatus"] = "checked" if context["inactive"] else "unchecked"
     context["myPostsCheckedStatus"] = "checked" if context["myPosts"] else "unchecked"
-
-
 
     return render(request, 'app/recruiter_dashboard.html', context=context)
 

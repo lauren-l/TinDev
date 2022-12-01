@@ -3,7 +3,6 @@ from django.core.validators import *
 from django.core.exceptions import ValidationError
 from .models import *
 from django.forms.widgets import *
-
 # CONSTANTS
 EDU_CHOICES =(
     ("1", "No formal education"),
@@ -55,7 +54,6 @@ SKILL_CHOICES = (
     ("23", "Natual Language Processing"),
     ("24", "Docker")
 )
-
 # CUSTOM VALIDATORS
 def clean_first_name(data):
     
