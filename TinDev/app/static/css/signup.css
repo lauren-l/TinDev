@@ -3,21 +3,37 @@ div.container {
     width: 100%;
     justify-content: center;
 }
+h1.signup-header {
+    font-size: 3vw;
+    text-align: center;
+}
+
+p.instructions {
+    font-style: italic;
+    text-align: right;
+}
 
 #header-div {
     width: 80%;
+    padding-top: 2vh;
 }
 #form-div{
     width: 100%;
     justify-content: center;
     display: flex;
     flex-direction: row;
-    padding: 5vw;
+    padding: 2vw;
 }
 
 
 #form-body {
     width: 90%;
+    background-color: #E8E8E8;
+    padding: 2%;
+    padding-top: 5%;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    border-radius: 20px;
 }
 .center {
     margin: auto;
@@ -25,23 +41,33 @@ div.container {
 }
 
 label {
-    width: 30%;
+    margin: auto;
+    text-align: right;
+    width: 80%;
     padding: 2vh;
     margin-bottom: 1vh;
-    font-weight: bold;
-    font-size: 20px
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
 }
-input {
+
+
+input, select {
     width: 60%;
+    height: 75%;
     padding: 2vh;
     margin-bottom: 1vh;
 }
-#buttond-div {
+#button-div {
     width: 100%;
+    display: flex;
+    margin: auto;
+    padding: 2vh;
+    padding-right: 10%;
+    justify-content: right;
 }
 #go-button {
-    width: 80%;
+    width: 8vw;
     height: 6vh;
-    display: block;
-    margin: 5vw;
+    display: block;    
 }

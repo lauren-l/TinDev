@@ -87,25 +87,36 @@ def clean_zip(data):
 
 class RSignUpForm(forms.Form):
 
-    first_name = forms.CharField(max_length=50, required=True, validators=[clean_first_name, MaxLengthValidator(50)])
-    last_name = forms.CharField(max_length=50,required=True, validators=[clean_last_name, MaxLengthValidator(50)])
-    username = forms.CharField(min_length=4, required=True, validators=[validate_slug, MaxLengthValidator(50)])
-    password = forms.CharField(min_length=8, required=True, validators=[validate_slug, MaxLengthValidator(50)], widget=forms.PasswordInput)
-    zip = forms.IntegerField(required=True, validators=[clean_zip])
-    company = forms.CharField(max_length=50, required=True, validators=[validate_slug, MaxLengthValidator(50)])
+    first_name = forms.CharField(max_length=50, required=True, validators=[clean_first_name, MaxLengthValidator(50)], label="First Name *")
+    last_name = forms.CharField(max_length=50,required=True, validators=[clean_last_name, MaxLengthValidator(50)], label="Last Name *")
+    username = forms.CharField(min_length=4, required=True, validators=[validate_slug, MaxLengthValidator(50)], label="Username *")
+    password = forms.CharField(min_length=8, required=True, validators=[validate_slug, MaxLengthValidator(50)], widget=forms.PasswordInput, label="Password *")
+    zip = forms.IntegerField(required=True, validators=[clean_zip], label="Zipcode *")
+    company = forms.CharField(max_length=50, required=True, validators=[validate_slug, MaxLengthValidator(50)], label="Company *")
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.label_suffix = ""  # Removes : as label suffix
 
 
 # recruiter signup form
 
 class CSignUpForm(forms.Form):
-    first_name = forms.CharField(max_length=50, required=True, validators=[clean_first_name, MaxLengthValidator(50)])
-    last_name = forms.CharField(max_length=50,required=True, validators=[clean_last_name, MaxLengthValidator(50)])
-    username = forms.CharField(min_length=4, required=True, validators=[validate_slug, MaxLengthValidator(50)])
-    password = forms.CharField(min_length=8, required=True, validators=[validate_slug, MaxLengthValidator(50)], widget=forms.PasswordInput)
-    zip = forms.IntegerField(required=True, validators=[clean_zip])
+    
 
-    bio = forms.CharField(max_length=500, required=False, validators=[MaxLengthValidator(500)])
-    github = forms.URLField(max_length=50, required=False, validators=[URLValidator, MaxLengthValidator(50)])
-    yoe = forms.ChoiceField(choices = YOE_CHOICES, required=True)
-    education = forms.ChoiceField(choices = EDU_CHOICES, required=False)
-    skills = forms.MultipleChoiceField(choices = SKILL_CHOICES, required=True)
+    first_name = forms.CharField(max_length=50, required=True, validators=[clean_first_name, MaxLengthValidator(50)], label='First Name *')
+    last_name = forms.CharField(max_length=50,required=True, validators=[clean_last_name, MaxLengthValidator(50)], label="Last Name *")
+    username = forms.CharField(min_length=4, required=True, validators=[validate_slug, MaxLengthValidator(50)], label="Username *")
+    password = forms.CharField(min_length=8, required=True, validators=[validate_slug, MaxLengthValidator(50)], widget=forms.PasswordInput, label="Password *")
+    zip = forms.IntegerField(required=True, validators=[clean_zip], label="Zipcode *")
+
+    bio = forms.CharField(max_length=500, required=False, validators=[MaxLengthValidator(500)], label="Bio")
+    github = forms.URLField(max_length=50, required=False, validators=[URLValidator, MaxLengthValidator(50)], label="Github Link")
+    yoe = forms.ChoiceField(choices = YOE_CHOICES, required=True, label="Years of Experience *")
+    education = forms.ChoiceField(choices = EDU_CHOICES, required=False, label="Education")
+    skills = forms.MultipleChoiceField(choices = SKILL_CHOICES, required=True, label="Skills")
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.label_suffix = ""  # Removes : as label suffix
+    
