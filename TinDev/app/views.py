@@ -68,11 +68,17 @@ def signup_recruiter(request):
         
     return render(request, 'app/signup_recruiter.html', {'form': form})
 
+
+def compute_cscore(jid, cid):
+    cscore = 0
+    return cscore
+
 def dashboard_candidate(request):
     jobData = list(Job.objects.values("title", "company", "description", "skills", "city", "state", "job_type", "expiration"))
     for item in jobData:
         item["skills"] = list(item["skills"].split(","))
     return render(request, 'app/candidate_dashboard.html', {"jobs": jobData})
+
 
 def dashboard_recruiter(request):
     context = {}
