@@ -3,6 +3,7 @@ from django.core.validators import *
 from django.core.exceptions import ValidationError
 from .models import *
 from django.forms.widgets import *
+
 # CONSTANTS
 EDU_CHOICES =(
     ("1", "No formal education"),

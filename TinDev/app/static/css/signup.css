@@ -35,10 +35,6 @@ p.instructions {
     grid-template-columns: 1fr 2fr;
     border-radius: 20px;
 }
-.center {
-    margin: auto;
-    width: 59%;
-}
 
 label {
     margin: auto;

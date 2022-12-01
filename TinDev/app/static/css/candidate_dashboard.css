@@ -34,3 +34,30 @@ main {
 .btn {
     margin:2px;
 }
+
+.search-result-message-div{
+    background-color: #635bff;
+    border-radius: 20px;
+    width: 30%;
+    height: 5vh;
+    padding: 10px;
+}
+
+p.search-result-message{
+    color: white;
+    text-align: center;
+    vertical-align: middle;
+    margin: auto;
+}
+
+.difficult-center {
+    margin: 0;
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    -ms-transform: translateX(-50%);
+    transform: translateX(-50%);
+
+  }
