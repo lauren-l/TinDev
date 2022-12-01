@@ -2,6 +2,8 @@
 
 <!DOCTYPE html>
 <html lang="en">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
 
 <head>
     <meta charset="UTF-8">
@@ -10,8 +12,9 @@
     <!-- CSS only -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <link rel="stylesheet" href="{% static 'css/candidate_dashboard.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static '../static/css/style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static '../static/css/candidate_dashboard.css' %}">
+
     <script src="https://kit.fontawesome.com/fcff164d2d.js" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
@@ -64,15 +67,23 @@
             <div class="col-8">
                 <div class="jobs-container">
                     <h2>Search Jobs</h2>
-                    <div class="search-bar">
-                        <input class='skinny align-middle' type="text" id="post_search_keyword"
+
+                    <form method="POST" class="search-bar">
+
+                        {% csrf_token %}
+                        <input class='skinny align-middle' type="text" name="post_search_keyword" id="post_search_keyword"
                             placeholder="Search Here">
-                        <button id="search-button" class="btn btn-primary btn-sm align-middle">Search</button>
-                    </div>
+                        <button type="submit" id="search-button" class="btn btn-primary btn-sm align-middle">Search</button>
+
+                    </form>
                     {% for job in jobs %}
-                    {% include './components/jobPost.html' with job=job %}
-                    {% endfor %}
+                        {% include './components/jobPost.html' with job=job %}
+                        {% endfor %}
                 </div>
+                {% if not jobs %}
+                <div class="search-result-message-div vertical-center difficult-center"><p class="vertical-centercenter search-result-message">No jobs to show</p></div>
+                
+                {% endif %}
             </div>
             <div class="col">
                 <div class="filter-container">

@@ -40,7 +40,6 @@ SKILL_CHOICES = (
 )
 # Create your views here.
 def home(request):
-
     if request.method == 'POST':
         l_username = request.POST.get('username')
         l_password = request.POST.get('password')
@@ -106,7 +105,6 @@ def submit_application(request):
             return HttpResponse("Already applied")
         
         # haven't applied yet
-        print('havent applied')
         job = Job.objects.filter(id=job_id)[0]
         job_description = job.description
         recruiter_id = job.author
@@ -137,14 +135,25 @@ def submit_application(request):
         return HttpResponse("Success")
     
     else: 
-        print('heres the error')
         return HttpResponse("Request method is not a GET")
 
+
+
 def dashboard_candidate(request):
-    jobData = list(Job.objects.values("title", "company", "description", "skills", "city", "state", "job_type", "expiration", "id"))
-    for item in jobData:
-        item["skills"] = list(item["skills"].split(","))
-    return render(request, 'app/candidate_dashboard.html', {"jobs": jobData})
+    if request.method == 'GET':
+        jobData = list(Job.objects.values("title", "company", "description", "skills", "city", "state", "job_type", "expiration", "id"))
+        for item in jobData:
+            item["skills"] = list(item["skills"].split(","))
+        return render(request, 'app/candidate_dashboard.html', {"jobs": jobData})
+    
+    elif request.method == 'POST':
+        keywords = set(request.POST.get('post_search_keyword').lower().split())
+        jobData = list(Job.objects.values("title", "company", "description", "skills", "city", "state", "job_type", "expiration", "id"))
+        jobs = list(filter(lambda x: not keywords.isdisjoint(set(x['description'].lower().split())), jobData))
+        for item in jobs:
+            item["skills"] = list(item["skills"].split(","))
+        return render(request, 'app/candidate_dashboard.html', {"jobs": jobs})
+
 
 
 def dashboard_recruiter(request):
