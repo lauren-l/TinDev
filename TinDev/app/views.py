@@ -49,6 +49,7 @@ def home(request):
 
         if recruiter:
             request.session['uid'] = recruiter[0].id
+            print(request.session['uid'])
             return redirect("/recruiter_dashboard")
         elif candidate:
             request.session['uid'] = candidate[0].id
@@ -70,6 +71,7 @@ def signup_candidate(request):
         if form.is_valid():
             # create candidate object
             b1 = Candidate.objects.create(first_name=form.cleaned_data['first_name'], last_name=form.cleaned_data['last_name'], zip=form.cleaned_data['zip'], username=form.cleaned_data['username'], password=form.cleaned_data['password'], bio=form.cleaned_data['bio'], skills=form.cleaned_data['skills'], github=form.cleaned_data['github'], yoe=form.cleaned_data['yoe'], education=form.cleaned_data['education'])
+            b1.save()
 
             # redirect to a new URL:
             return HttpResponseRedirect('/home')
@@ -85,6 +87,7 @@ def signup_recruiter(request):
         if form.is_valid():
             # create recruiter object
             b1 = Recruiter.objects.create(first_name=form.cleaned_data['first_name'], last_name=form.cleaned_data['last_name'], company=form.cleaned_data['company'], zip=form.cleaned_data['zip'], username=form.cleaned_data['username'], password=form.cleaned_data['password'])
+            b1.save()
 
             # redirect to a new URL:
             return HttpResponseRedirect('/home')
@@ -158,6 +161,7 @@ def dashboard_candidate(request):
 
 def dashboard_recruiter(request):
     context = {}
+    recruiter_id = request.session['uid']
 
     # set default post fitlers
     context["myPosts"] = False
@@ -178,24 +182,29 @@ def dashboard_recruiter(request):
         data = list(Job.objects.filter(
             active=True,
             numCandidates__gte = context["numCandidates"]
-        ).values("title", "company", "description", "skills", "city", "state", "coverImage", "active", "job_type", "numCandidates"))
+        ).values("title", "company", "description", "skills", "city", "state", "coverImage", "active", "job_type", "numCandidates", "author"))
     elif context["inactive"] and not context["active"]: # only inactive posts
         data = list(Job.objects.filter(
             active=False,
             numCandidates__gte = context["numCandidates"]
-        ).values("title", "company", "description", "skills", "city", "state", "coverImage", "active", "job_type", "numCandidates"))
+        ).values("title", "company", "description", "skills", "city", "state", "coverImage", "active", "job_type", "numCandidates", "author"))
     elif context["active"] and context["inactive"]:
         data = list(Job.objects.filter(
             numCandidates__gte = context["numCandidates"]
-        ).values("title", "company", "description", "skills", "city", "state", "coverImage", "active", "job_type", "numCandidates"))
+        ).values("title", "company", "description", "skills", "city", "state", "coverImage", "active", "job_type", "numCandidates", "author"))
     else:
         data = []
 
+    # filtering data to only include jobs of current user/recruiter
+    if context["myPosts"]:
+        data = list(filter(lambda x: str(x['author']) == str(recruiter_id), data))
+    
     for item in data:
         item["numCandidates"] = str(item["numCandidates"])
         item["coverImage"] = item["coverImage"].replace("app/static/", "")
         item["skills"] = list(item["skills"].split(","))
         item["status"] = "Active" if item["active"] else "Inactive"
+    
     
     context["jobs"] = data
     context["activeCheckedStatus"] = "checked" if context["active"] else "unchecked"
