@@ -1,0 +1,77 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<div class="job-container">
+    <div class="row">
+        <div class="col-2">
+            <img src="#" class="img-thumbnail">
+        </div>
+        <div class="col-8">
+            <h4 style="display:inline">{{ job.title }}  </h4>
+            <h6 class="align-items-center" style="display:inline; padding-left: 1rem;">{{ job.company }}</h6>
+            <p>{{ job.description }}</p>
+            <div id="location">
+                <h6 style="display:inline">Location: </h6>
+                <p style="display:inline">{{ job.city }}, {{ job.state }}</p>
+            </div>
+            <div id="skills">
+                <div class="d-flex flex-row align-items-center">
+                    <h6 style="display:inline">Skills: </h6>
+                    <p style="display:inline">
+                        {% for skill in job.skills %}
+                        <button type="button" class="btn btn-outline-primary btn-sm">{{ skill }}</button>
+                        {% endfor %}
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="d flex-row">
+                <button type="button" class="btn btn-primary btn-sm"><i
+                        class="fa-solid fa-thumbs-up"></i></button>
+                <button type="button" class="btn btn-primary btn-sm"><i
+                        class="fa-solid fa-thumbs-down"></i></button>
+            </div>
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+            data-bs-target="#exampleModal" style="float: right">Learn More</button>
+            <button type="button" class="btn btn-success btn-sm" style="float: right">Apply</button>
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" data-bs-backdrop="static" data-bs-keyboard="false"
+                tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Post</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-3">
+                                    <img src="#" class="img-thumbnail">
+                                </div>
+                                <div class="col-9">
+                                    <h4>{{ job.company }}</h4>
+                                    <p>{{ job.job_type }} | {{ job.city }}, {{ job.state }} </p>
+                                </div>
+                                <p>{{ job.description }}</p>
+                                <p>Skills:
+                                    {% for skill in job.skills %}
+                                    <button type="button" class="btn btn-outline-primary btn-sm">{{ skill }}</button>
+                                    {% endfor %}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary"
+                                data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Apply</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

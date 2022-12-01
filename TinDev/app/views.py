@@ -69,7 +69,10 @@ def signup_recruiter(request):
     return render(request, 'app/signup_recruiter.html', {'form': form})
 
 def dashboard_candidate(request):
-    return render(request, 'app/candidate_dashboard.html')
+    jobData = list(Job.objects.values("title", "company", "description", "skills", "city", "state", "job_type", "expiration"))
+    for item in jobData:
+        item["skills"] = list(item["skills"].split(","))
+    return render(request, 'app/candidate_dashboard.html', {"jobs": jobData})
 
 def dashboard_recruiter(request):
     context = {}
@@ -122,3 +125,15 @@ def dashboard_recruiter(request):
 
 
     return render(request, 'app/recruiter_dashboard.html', context=context)
+
+def candidate_offers(request):
+    jobData = list(Job.objects.values("title", "company", "description", "skills", "city", "state", "job_type", "expiration"))
+    for item in jobData:
+        item["skills"] = list(item["skills"].split(","))
+
+    # Need to check for specific account
+    # candData = list(Candidate.objects.values("first_name, last_name, skills, github"))
+    # for item in candData:
+    #     item["skills"] = list(item["skills"].split(","))
+
+    return render(request, 'app/candidate_offers.html', {"jobs": jobData})
