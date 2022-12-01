@@ -1,21 +1,47 @@
-form {
-    width: 100vw;
-    display: flex;
-    flex-direction: column;
-    justify-content: center
-}
-div.signup-container {
+
+div.container {
     width: 100%;
+    justify-content: center;
+}
+
+#header-div {
+    width: 80%;
+}
+#form-div{
+    width: 100%;
+    justify-content: center;
     display: flex;
     flex-direction: row;
-    justify-content: center
-
+    padding: 5vw;
 }
 
-div.sign-up {
-    width: 50%;
+
+#form-body {
+    width: 90%;
+}
+.center {
+    margin: auto;
+    width: 59%;
 }
 
-button.submit-button {
-    width: 10%
+label {
+    width: 30%;
+    padding: 2vh;
+    margin-bottom: 1vh;
+    font-weight: bold;
+    font-size: 20px
+}
+input {
+    width: 60%;
+    padding: 2vh;
+    margin-bottom: 1vh;
+}
+#buttond-div {
+    width: 100%;
+}
+#go-button {
+    width: 80%;
+    height: 6vh;
+    display: block;
+    margin: 5vw;
 }
