@@ -5,7 +5,7 @@ class Candidate(models.Model):
     id = models.AutoField(primary_key=True)
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
-    zip = models.CharField(max_length=5)
+    zip = models.CharField(max_length=5, min_length=5)
     username = models.CharField(max_length=50)
     password = models.CharField(max_length=50)
     bio = models.TextField(max_length=500, default='N/A')
@@ -22,7 +22,7 @@ class Recruiter(models.Model):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     company = models.CharField(max_length=50)
-    zip = models.IntegerField()
+    zip = models.CharField(max_length=5, min_length=5)
     username = models.CharField(max_length=50)
     password = models.CharField(max_length=50)
 
