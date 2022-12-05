@@ -143,11 +143,33 @@ def submit_application(request):
 
 
 def dashboard_candidate(request):
+    context = {}
+    # set default post fitlers
+    context["myPost"] = False
+    context["active"] = True
+    context["inactive"] = False
+    context["partTime"] = True
+    context["fullTime"] = True
+    context["locSF"] = False
+    context["locNY"] = False
+    context["locAu"] = False
+    context["myPostsCheckedStatus"] = "unchecked"
+    context["activeCheckedStatus"] = "checked"
+    context["inactiveCheckedStatus"] = "unchecked"
+    context["partTimeCheckedStatus"] = "checked"
+    context["fullTimeCheckedStatus"] = "checked"
+    context["SFCheckedStatus"] = "checked"
+    context["NYCheckedStatus"] = "checked"
+    context["AuCheckedStatus"] = "checked"
+    
     if request.method == 'GET':
-        jobData = list(Job.objects.values("title", "company", "description", "skills", "city", "state", "job_type", "expiration", "id"))
+        jobData = list(Job.objects.filter(
+            active=True
+        ).values("title", "company", "description", "skills", "city", "state", "job_type", "expiration", "id"))
         for item in jobData:
             item["skills"] = list(item["skills"].split(","))
-        return render(request, 'app/candidate_dashboard.html', {"jobs": jobData})
+        context["jobs"] = jobData
+        return render(request, 'app/candidate_dashboard.html', context)
     
     elif request.method == 'POST':
         keywords = set(request.POST.get('post_search_keyword').lower().split())
@@ -155,7 +177,8 @@ def dashboard_candidate(request):
         jobs = list(filter(lambda x: not keywords.isdisjoint(set(x['description'].lower().split())), jobData))
         for item in jobs:
             item["skills"] = list(item["skills"].split(","))
-        return render(request, 'app/candidate_dashboard.html', {"jobs": jobs})
+        context["job"] = jobData
+        return render(request, 'app/candidate_dashboard.html', context)
 
 
 
