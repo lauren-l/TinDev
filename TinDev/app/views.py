@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.shortcuts import render
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
@@ -7,7 +8,7 @@ from django.contrib.auth.models import User, auth
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.http import HttpResponseRedirect
-from .forms import RSignUpForm, CSignUpForm
+from .forms import RSignUpForm, CSignUpForm, OfferForm
 from .models import *
 from django.db import connection
 
@@ -269,7 +270,7 @@ def dashboard_recruiter(request):
         item["skills"] = list(item["skills"].split(","))
         item["status"] = "Active" if item["active"] else "Inactive"
         # only enable view applicants button if user is the author of the post
-        item["viewApplicants"] = "disabled" if str(item['author']) == str(recruiter_id) else ""
+        item["viewApplicants"] = "disabled" if str(item['author']) != str(recruiter_id) else ""
     
     
     context["jobs"] = data
@@ -292,10 +293,35 @@ def candidate_offers(request):
     return render(request, 'app/candidate_offers.html', {"jobs": jobData})
 
 def view_applicants(request):
+    form = OfferForm()
     jobId = request.session["job-id"]
     # get all applications with matching job-id
     applications = list(Applications.objects.filter(job_id = jobId, recruiter_id = request.session['uid']).values("candidate_id", "compatibility_score"))
 
+    if request.method == 'POST':
+        for key, value in request.POST.items():
+            print(f'Key: {key}')
+            print(f'Value: {value}')
+        # if an offer was sent
+        form = OfferForm(request.POST)
+
+        # get the salary + expiration date
+        applicant_id = request.POST.get("applicant-id")
+
+        if form.is_valid():
+            Nsalary = form.cleaned_data['salary']
+            expiration = form.cleaned_data["expirationDate"]
+
+        existingOffer = Offers.objects.get(job_id=jobId, candidate_id=applicant_id)
+        
+        if existingOffer:
+            # if an offer exists for the job for the applicant, update the entry
+            existingOffer.salary=Nsalary
+            existingOffer.offerDeadline= expiration
+            existingOffer.save()
+        else:
+            b1 = Offers.objects.create(job_id=jobId, candidate_id=applicant_id, recruiter_id=request.session["uid"],offerDeadline=expiration, salary=Nsalary, response=False, accepted=False)
+            b1.save()
     # get and parse data for all candidates who submitted an application
     for applicant in applications:
         applicant_info = list(Candidate.objects.filter(id = applicant["candidate_id"]).values("first_name", "last_name", "bio", "yoe", "education", "github", "zip", "skills"))
@@ -310,4 +336,4 @@ def view_applicants(request):
 
 
     # render page with all applicants for job
-    return render(request, 'app/view_applicants.html', {"applicants": applications})
+    return render(request, 'app/view_applicants.html', {"applicants": applications,"form":form})

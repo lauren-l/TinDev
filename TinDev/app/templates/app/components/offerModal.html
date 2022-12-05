@@ -1,0 +1,36 @@
+{% load static %}
+
+<div class="modal fade" id="offerModal-{{ applicant.candidate_id }}" data-bs-backdrop="static" data-bs-keyboard="false"
+    tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Offer Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <form method="POST">
+                {% csrf_token %}
+                <input type="hidden" value="{{ applicant.candidate_id }}" name="applicant-id" />
+                <div class="modal-body">
+                    <div class="form-group">
+                        {{ form.as_p }}
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <!------
+                    <button type="button" class="btn btn-primary btn-sm" name="applicant-id"
+                        value="{{ applicant.candidate_id }}" style="float:right" disabled>
+                        Candidate ID: {{ applicant.candidate_id }}
+                    </button>
+                    ------>
+                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary btn-sm align-middle" name="send-offer"
+                        style="float:right">
+                        <p style="display: inline;">Send Offer</p>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
