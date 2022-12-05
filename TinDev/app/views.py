@@ -145,7 +145,7 @@ def submit_application(request):
 def dashboard_candidate(request):
     context = {}
     # set default post fitlers
-    context["myPost"] = False
+    context["myPosts"] = False
     context["active"] = True
     context["inactive"] = False
     context["partTime"] = True
@@ -172,12 +172,36 @@ def dashboard_candidate(request):
         return render(request, 'app/candidate_dashboard.html', context)
     
     elif request.method == 'POST':
-        keywords = set(request.POST.get('post_search_keyword').lower().split())
-        jobData = list(Job.objects.values("title", "company", "description", "skills", "city", "state", "job_type", "expiration", "id"))
-        jobs = list(filter(lambda x: not keywords.isdisjoint(set(x['description'].lower().split())), jobData))
-        for item in jobs:
-            item["skills"] = list(item["skills"].split(","))
-        context["job"] = jobData
+        if request.POST.get("filterPosts"):
+            context["myPosts"] = False if request.POST.get('myPosts') == None else True
+            context["active"] = False if request.POST.get('post-status-active') == None else True
+            context["inactive"] = False if request.POST.get('post-status-inactive') == None else True
+            context["partTime"] = False if request.POST.get("post-status-part-time") == None else True
+            context["fullTime"] = False if request.POST.get("post-status-full-time") == None else True
+            context["locSF"] = False if request.POST.get("post-loc-SF") == None else True
+            context["locNY"] = False if request.POST.get("post-loc-NY") == None else True
+            context["locAu"] = False if request.POST.get("post-loc-Au") == None else True
+            context["activeCheckedStatus"] = "checked" if context["active"] else "unchecked"
+            context["inactiveCheckedStatus"] = "checked" if context["inactive"] else "unchecked"
+            context["myPostsCheckedStatus"] = "checked" if context["myPosts"] else "unchecked"
+            context["partTimeCheckedStatus"] = "checked" if context["partTime"] else "unchecked"
+            context["fullTimeCheckedStatus"] = "checked" if context["fullTime"] else "unchecked"
+            context["SFCheckedStatus"] = "checked" if context["locSF"] else "unchecked"
+            context["NYCheckedStatus"] = "checked" if context["locNY"] else "unchecked"
+            context["AuCheckedStatus"] = "checked" if context["locAu"] else "unchecked"
+            jobData = list(Job.objects.values("title", "company", "description", "skills", "city", "state", "job_type", "expiration", "id"))
+            for item in jobData:
+                item["skills"] = list(item["skills"].split(","))
+            context["jobs"] = jobData
+            return render(request, 'app/candidate_dashboard.html', context)
+        else:
+            keywords = set(request.POST.get('post_search_keyword').lower().split())
+            jobData = list(Job.objects.values("title", "company", "description", "skills", "city", "state", "job_type", "expiration", "id"))
+            jobs = list(filter(lambda x: not keywords.isdisjoint(set(x['description'].lower().split())), jobData))
+            for item in jobs:
+                item["skills"] = list(item["skills"].split(","))
+            context["job"] = jobData
+            return render(request, 'app/candidate_dashboard.html', context)
         return render(request, 'app/candidate_dashboard.html', context)
 
 
@@ -202,10 +226,11 @@ def dashboard_recruiter(request):
             # redirect to view applicant portal w/ job id
             request.session['job-id'] = request.POST.get("view-applicants")
             return redirect(f'/view_applicants')
-        context["myPosts"] = False if request.POST.get('my-post') == None else True
-        context["active"] = False if request.POST.get('post-status-active') == None else True
-        context["inactive"] = False if request.POST.get('post-status-inactive') == None else True
-        context["numCandidates"] = request.POST.get('candidateRange')
+        else:
+            context["myPosts"] = False if request.POST.get('my-post') == None else True
+            context["active"] = False if request.POST.get('post-status-active') == None else True
+            context["inactive"] = False if request.POST.get('post-status-inactive') == None else True
+            context["numCandidates"] = request.POST.get('candidateRange')
     
     if context["active"] and not context["inactive"]: # only active posts
         data = list(Job.objects.filter(

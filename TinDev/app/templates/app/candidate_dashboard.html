@@ -103,7 +103,7 @@
                                     <div class="card-body">
                                         <div class="custom-control custom-checkbox">
                                             <input type="checkbox" class="custom-control-input" id="Check1"
-                                                value="{{ myPost }}" {{myPostsCheckedStatus}}>
+                                                name="myPosts" value="{{ myPost }}" {{myPostsCheckedStatus}}>
                                             <label class="custom-control-label">Saved Posts Only</label>
                                         </div>
                                     </div>
@@ -118,14 +118,15 @@
                                 <div class="filter-content">
                                     <div class="card-body">
                                         <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="post-status-active"
-                                                value="{{ active }}" {{activeCheckedStatus}}>
+                                            <input type="checkbox" class="custom-control-input"
+                                                name="post-status-active" id="post-status-active" value="{{ active }}"
+                                                {{activeCheckedStatus}}>
                                             <label class="custom-control-label">Active</label>
                                         </div>
                                         <div class="custom-control custom-checkbox">
                                             <input type="checkbox" class="custom-control-input"
-                                                id="post-status-inactive" value="{{ inactive }}"
-                                                {{inactiveCheckedStatus}}>
+                                                name="post-status-inactive" id="post-status-inactive"
+                                                value="{{ inactive }}" {{inactiveCheckedStatus}}>
                                             <label class="custom-control-label">Inactive</label>
                                         </div>
                                     </div>
@@ -140,14 +141,15 @@
                                 <div class="filter-content">
                                     <div class="card-body">
                                         <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="post-status-active"
+                                            <input type="checkbox" class="custom-control-input"
+                                                name="post-status-part-time" id="post-status-part-time"
                                                 value="{{ partTime }}" {{partTimeCheckedStatus}}>
                                             <label class="custom-control-label">Part Time</label>
                                         </div>
                                         <div class="custom-control custom-checkbox">
                                             <input type="checkbox" class="custom-control-input"
-                                                id="post-status-inactive" value="{{ fullTime }}"
-                                                {{fullTimeCheckedStatus}}>
+                                                name="post-status-full-time" id="post-status-full-time"
+                                                value="{{ fullTime }}" {{fullTimeCheckedStatus}}>
                                             <label class="custom-control-label">Full Time</label>
                                         </div>
                                     </div>
@@ -162,25 +164,26 @@
                                 <div class="filter-content">
                                     <div class="card-body">
                                         <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="post-status-active"
-                                                value="{{ locSF }}" {{SFCheckedStatus}}>
+                                            <input type="checkbox" class="custom-control-input" name="post-loc-SF"
+                                                id="post-loc-SF" value="{{ locSF }}" {{SFCheckedStatus}}>
                                             <label class="custom-control-label">San Francisco</label>
                                         </div>
                                         <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input"
-                                                id="post-status-inactive" value="{{ locNY }}" {{NYCheckedStatus}}>
+                                            <input type="checkbox" class="custom-control-input" id="post-loc-NY"
+                                                name="post-loc-NY" value="{{ locNY }}" {{NYCheckedStatus}}>
                                             <label class="custom-control-label">New York</label>
                                         </div>
                                         <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input"
-                                                id="post-status-inactive" value="{{ locAu }}" {{AuCheckedStatus}}>
+                                            <input type="checkbox" class="custom-control-input" id="post-loc-Au"
+                                                name="post-loc-Au" value="{{ locAu }}" {{AuCheckedStatus}}>
                                             <label class="custom-control-label">Austin</label>
                                         </div>
                                     </div>
                                 </div>
                             </article>
                         </div><br />
-                        <input class="btn btn-primary" type="submit" value="Filter" style="width:100%">
+                        <input class="btn btn-primary" name="filterPosts" type="submit" value="Filter"
+                            style="width:100%">
                     </form>
                 </div>
             </div>
