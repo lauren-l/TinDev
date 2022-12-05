@@ -143,20 +143,78 @@ def submit_application(request):
 
 
 def dashboard_candidate(request):
-    if request.method == 'GET':
-        jobData = list(Job.objects.values("title", "company", "description", "skills", "city", "state", "job_type", "expiration", "id"))
-        for item in jobData:
-            item["skills"] = list(item["skills"].split(","))
-        return render(request, 'app/candidate_dashboard.html', {"jobs": jobData})
-    
-    elif request.method == 'POST':
-        keywords = set(request.POST.get('post_search_keyword').lower().split())
-        jobData = list(Job.objects.values("title", "company", "description", "skills", "city", "state", "job_type", "expiration", "id"))
-        jobs = list(filter(lambda x: not keywords.isdisjoint(set(x['description'].lower().split())), jobData))
-        for item in jobs:
-            item["skills"] = list(item["skills"].split(","))
-        return render(request, 'app/candidate_dashboard.html', {"jobs": jobs})
 
+    context = {}
+    candidate_id = request.session['uid']
+    print(candidate_id)
+
+    # set default post filters
+    context["first_name"] = False
+    context["myPosts"] = False
+    context["interested"] = False
+    context["uninterested"] = False
+    context["active"] = True
+    context["inactive"] = False
+    context["numCandidates"] = 0
+    context["interestedCheckedStatus"] = "unchecked"
+    context["myPostsCheckedStatus"] = "unchecked"
+    context["activeCheckedStatus"] = "checked"
+    context["inactiveCheckedStatus"] = "unchecked"
+
+    if request.method == 'POST':
+        context["interested"] = False if request.POST.get('post-status-interested') == None else True
+        context["uninterested"] = False if request.POST.get('post-status-uninterested') == None else True
+        context["myPosts"] = False if request.POST.get('my-post') == None else True
+        context["active"] = False if request.POST.get('post-status-active') == None else True
+        context["inactive"] = False if request.POST.get('post-status-inactive') == None else True
+        context["numCandidates"] = request.POST.get('candidateRange')
+    
+    if context["interested"] and not context["uninterested"]: # only interested posts
+        data = list(Job.objects.filter(
+            active=True,
+            numCandidates__gte = context["numCandidates"]
+        ).values("id", "title", "company", "description", "skills", "city", "state", "coverImage", "active", "job_type", "numCandidates", "author"))
+    elif context["active"] and not context["inactive"]: # only active posts
+        data = list(Job.objects.filter(
+            active=True,
+            numCandidates__gte = context["numCandidates"]
+        ).values("id", "title", "company", "description", "skills", "city", "state", "coverImage", "active", "job_type", "numCandidates", "author"))
+    elif context["inactive"] and not context["active"]: # only inactive posts
+        data = list(Job.objects.filter(
+            active=False,
+            numCandidates__gte = context["numCandidates"]
+        ).values("id", "title", "company", "description", "skills", "city", "state", "coverImage", "active", "job_type", "numCandidates", "author"))
+    elif context["active"] and context["inactive"]:
+        data = list(Job.objects.filter(
+            numCandidates__gte = context["numCandidates"]
+        ).values("id", "title", "company", "description", "skills", "city", "state", "coverImage", "active", "job_type", "numCandidates", "author"))
+    else:
+        data = []
+
+    # filtering data to only include jobs of current user
+    if context["myPosts"]:
+        data = list(filter(lambda x: str(x['author']) == str(candidate_id), data))
+    
+    for item in data:
+        item["numCandidates"] = str(item["numCandidates"])
+        item["coverImage"] = item["coverImage"].replace("app/static/", "")
+        item["skills"] = list(item["skills"].split(","))
+        item["status"] = "Active" if item["active"] else "Inactive"
+     
+    context["jobs"] = data
+    context["interestedCheckedStatus"] = "checked" if context["interested"] else "unchecked"
+    context["uninterestedCheckedStatus"] = "checked" if context["uninterested"] else "unchecked"
+    context["activeCheckedStatus"] = "checked" if context["active"] else "unchecked"
+    context["inactiveCheckedStatus"] = "checked" if context["inactive"] else "unchecked"
+    context["myPostsCheckedStatus"] = "checked" if context["myPosts"] else "unchecked"
+
+    cand_info = list(Candidate.objects.values("first_name", "last_name", "github", "skills"))
+    context["first_name"] = cand_info[0]["first_name"]
+    context["last_name"] = cand_info[0]["last_name"]
+    context["github"] = cand_info[0]["github"]
+    context["skills"] = cand_info[0]["skills"].split(",")
+
+    return render(request, 'app/candidate_dashboard.html', context=context)
 
 
 def dashboard_recruiter(request):
