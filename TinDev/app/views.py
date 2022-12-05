@@ -189,6 +189,7 @@ def dashboard_candidate(request):
             context["SFCheckedStatus"] = "checked" if context["locSF"] else "unchecked"
             context["NYCheckedStatus"] = "checked" if context["locNY"] else "unchecked"
             context["AuCheckedStatus"] = "checked" if context["locAu"] else "unchecked"
+            # Filter data based on values above here:
             jobData = list(Job.objects.values("title", "company", "description", "skills", "city", "state", "job_type", "expiration", "id"))
             for item in jobData:
                 item["skills"] = list(item["skills"].split(","))
