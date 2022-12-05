@@ -1,3 +1,4 @@
+import datetime
 from django import forms
 from django.core.validators import *
 from django.core.exceptions import ValidationError
@@ -108,4 +109,17 @@ class CSignUpForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.label_suffix = ""  # Removes : as label suffix
+class OfferForm(forms.Form):
+    salary =  forms.IntegerField(label="Yearly Salary")
+    expirationDate = forms.DateTimeField(
+        input_formats = ['%d-%m-%yT%H:%M'],
+        initial=datetime.datetime.now,
+        widget = forms.DateTimeInput(
+            attrs={
+                'type': 'datetime-local',
+                'class': 'form-control input',
+                'required':'required'},
+            format='%d-%m-%yT%H:%M')
+    )
+    salary.widget.attrs.update({'class':'form-control input', 'required':'required'})
     

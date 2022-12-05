@@ -11,6 +11,8 @@
         integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="{% static 'css/recruiter_dashboard.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/offer_modal.css' %}">
+
     <title>Dashboard | TinDev</title>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
@@ -41,19 +43,21 @@
 
 <body style="background-color:rgb(253, 253, 253)">
     <main>
-        <div style="padding-top:2rem">
+        <div style="padding-top:2rem; float:left; display:inline">
+            <div style="padding: 0rem 3rem 1rem">
+                <input class="btn btn-primary return-button" value="Return to Dashboard"
+                    onclick="location.href='/recruiter_dashboard'">
+            </div>
             <div>
-                <div class="post-content">
+                <div class=" post-content">
                     {% for applicant in applicants %}
-                    {% include './components/applicantCard.html' with applicant=applicant %}
+                    {% include './components/applicantCard.html' with applicant=applicant form=form%}
                     {% endfor %}
                 </div>
             </div>
         </div>
     </main>
     <hr>
-    <footer>
-    </footer>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>
