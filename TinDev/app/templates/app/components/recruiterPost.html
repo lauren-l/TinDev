@@ -48,10 +48,20 @@
                 {% endfor %}
 
                 <!------ Button to view applicants ---->
-                <button id="search-button" class="btn btn-primary btn-sm align-middle" style="float: right">
+                <form method="POST">
+                    {% csrf_token %}
+                    <button id="search-button" type="submit" class="btn btn-primary btn-sm align-middle"
+                        name="view-applicants" value="{{ job.id }}" style="float:right" {{job.viewApplicants}}>
+                        <p style="display: inline;">View </p> {{ job.numCandidates }} <p style="display: inline;">
+                            Applicants</p>
+                    </button>
+                </form>
+                <!------ 
+                <button id="search-button" class="btn btn-primary btn-sm align-middle" onclick="">
                     <p style="display: inline;">View </p> {{ job.numCandidates }} <p style="display: inline;">
                         Applicants</p>
                 </button>
+                Button to view applicants ---->
             </span>
         </div>
     </div>
