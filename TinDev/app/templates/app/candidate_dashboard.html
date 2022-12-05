@@ -71,101 +71,111 @@
                     <form method="POST" class="search-bar">
 
                         {% csrf_token %}
-                        <input class='skinny align-middle' type="text" name="post_search_keyword" id="post_search_keyword"
-                            placeholder="Search Here">
-                        <button type="submit" id="search-button" class="btn btn-primary btn-sm align-middle">Search</button>
+                        <input class='skinny align-middle' type="text" name="post_search_keyword"
+                            id="post_search_keyword" placeholder="Search Here">
+                        <button type="submit" id="search-button"
+                            class="btn btn-primary btn-sm align-middle">Search</button>
 
                     </form>
                     {% for job in jobs %}
-                        {% include './components/jobPost.html' with job=job %}
-                        {% endfor %}
+                    {% include './components/jobPost.html' with job=job %}
+                    {% endfor %}
                 </div>
                 {% if not jobs %}
-                <div class="search-result-message-div vertical-center difficult-center"><p class="vertical-centercenter search-result-message">No jobs to show</p></div>
-                
+                <div class="search-result-message-div vertical-center difficult-center">
+                    <p class="vertical-centercenter search-result-message">No jobs to show</p>
+                </div>
+
                 {% endif %}
             </div>
             <div class="col">
                 <div class="filter-container">
                     <h3>Job Filters</h3>
                     <br />
-                    <div class="card-item">
-                        <article class="card">
-                            <header class="card-header">
-                                <h6 class="filter-title">Post Filters</h6>
-                            </header>
-                            <div class="filter-content">
-                                <div class="card-body">
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="Check1">
-                                        <label class="custom-control-label">Saved Posts Only</label>
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="card-item">
+                            <article class="card">
+                                <header class="card-header">
+                                    <h6 class="filter-title">Post Filters</h6>
+                                </header>
+                                <div class="filter-content">
+                                    <div class="card-body">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="Check1">
+                                            <label class="custom-control-label">Saved Posts Only</label>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </article>
-                    </div><br />
-                    <div class="card-item">
-                        <article class="card">
-                            <header class="card-header">
-                                <h6 class="filter-title">Job Post Status</h6>
-                            </header>
-                            <div class="filter-content">
-                                <div class="card-body">
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="post-status-active">
-                                        <label class="custom-control-label">Active</label>
-                                    </div>
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="post-status-inactive">
-                                        <label class="custom-control-label">Inactive</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </article>
-                    </div></br>
-                    <div class="card-item">
-                        <article class="card">
-                            <header class="card-header">
-                                <h6 class="filter-title">Type</h6>
-                            </header>
-                            <div class="filter-content">
-                                <div class="card-body">
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="post-status-active">
-                                        <label class="custom-control-label">Part Time</label>
-                                    </div>
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="post-status-inactive">
-                                        <label class="custom-control-label">Full Time</label>
+                            </article>
+                        </div><br />
+                        <div class="card-item">
+                            <article class="card">
+                                <header class="card-header">
+                                    <h6 class="filter-title">Job Post Status</h6>
+                                </header>
+                                <div class="filter-content">
+                                    <div class="card-body">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="post-status-active">
+                                            <label class="custom-control-label">Active</label>
+                                        </div>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input"
+                                                id="post-status-inactive">
+                                            <label class="custom-control-label">Inactive</label>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </article>
-                    </div><br />
-                    <div class="card-item">
-                        <article class="card">
-                            <header class="card-header">
-                                <h6 class="filter-title">Job Location</h6>
-                            </header>
-                            <div class="filter-content">
-                                <div class="card-body">
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="post-status-active">
-                                        <label class="custom-control-label">San Francisco</label>
-                                    </div>
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="post-status-inactive">
-                                        <label class="custom-control-label">New York</label>
-                                    </div>
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="post-status-inactive">
-                                        <label class="custom-control-label">Austin</label>
+                            </article>
+                        </div></br>
+                        <div class="card-item">
+                            <article class="card">
+                                <header class="card-header">
+                                    <h6 class="filter-title">Type</h6>
+                                </header>
+                                <div class="filter-content">
+                                    <div class="card-body">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="post-status-active">
+                                            <label class="custom-control-label">Part Time</label>
+                                        </div>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input"
+                                                id="post-status-inactive">
+                                            <label class="custom-control-label">Full Time</label>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </article>
-                    </div><br />
-                    <button class="btn btn-primary" type="Clear Filters" value="Reset">Clear Filters</button>
+                            </article>
+                        </div><br />
+                        <div class="card-item">
+                            <article class="card">
+                                <header class="card-header">
+                                    <h6 class="filter-title">Job Location</h6>
+                                </header>
+                                <div class="filter-content">
+                                    <div class="card-body">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="post-status-active">
+                                            <label class="custom-control-label">San Francisco</label>
+                                        </div>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input"
+                                                id="post-status-inactive">
+                                            <label class="custom-control-label">New York</label>
+                                        </div>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input"
+                                                id="post-status-inactive">
+                                            <label class="custom-control-label">Austin</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </article>
+                        </div><br />
+                        <input class="btn btn-primary" type="submit" value="Filter" style="width:100%">
+                    </form>
                 </div>
             </div>
         </div>

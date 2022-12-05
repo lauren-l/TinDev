@@ -162,6 +162,7 @@ def dashboard_candidate(request):
 def dashboard_recruiter(request):
     context = {}
     recruiter_id = request.session['uid']
+    print(recruiter_id)
 
     # set default post fitlers
     context["myPosts"] = False
@@ -173,6 +174,11 @@ def dashboard_recruiter(request):
     context["inactiveCheckedStatus"] = "unchecked"
 
     if request.method == 'POST':
+        # if user wants to view applicant for certain job
+        if request.POST.get("view-applicants"):
+            # redirect to view applicant portal w/ job id
+            request.session['job-id'] = request.POST.get("view-applicants")
+            return redirect(f'/view_applicants')
         context["myPosts"] = False if request.POST.get('my-post') == None else True
         context["active"] = False if request.POST.get('post-status-active') == None else True
         context["inactive"] = False if request.POST.get('post-status-inactive') == None else True
@@ -182,16 +188,16 @@ def dashboard_recruiter(request):
         data = list(Job.objects.filter(
             active=True,
             numCandidates__gte = context["numCandidates"]
-        ).values("title", "company", "description", "skills", "city", "state", "coverImage", "active", "job_type", "numCandidates", "author"))
+        ).values("id", "title", "company", "description", "skills", "city", "state", "coverImage", "active", "job_type", "numCandidates", "author"))
     elif context["inactive"] and not context["active"]: # only inactive posts
         data = list(Job.objects.filter(
             active=False,
             numCandidates__gte = context["numCandidates"]
-        ).values("title", "company", "description", "skills", "city", "state", "coverImage", "active", "job_type", "numCandidates", "author"))
+        ).values("id", "title", "company", "description", "skills", "city", "state", "coverImage", "active", "job_type", "numCandidates", "author"))
     elif context["active"] and context["inactive"]:
         data = list(Job.objects.filter(
             numCandidates__gte = context["numCandidates"]
-        ).values("title", "company", "description", "skills", "city", "state", "coverImage", "active", "job_type", "numCandidates", "author"))
+        ).values("id", "title", "company", "description", "skills", "city", "state", "coverImage", "active", "job_type", "numCandidates", "author"))
     else:
         data = []
 
@@ -204,6 +210,8 @@ def dashboard_recruiter(request):
         item["coverImage"] = item["coverImage"].replace("app/static/", "")
         item["skills"] = list(item["skills"].split(","))
         item["status"] = "Active" if item["active"] else "Inactive"
+        # only enable view applicants button if user is the author of the post
+        item["viewApplicants"] = "disabled" if str(item['author']) == str(recruiter_id) else ""
     
     
     context["jobs"] = data
@@ -224,3 +232,24 @@ def candidate_offers(request):
     #     item["skills"] = list(item["skills"].split(","))
 
     return render(request, 'app/candidate_offers.html', {"jobs": jobData})
+
+def view_applicants(request):
+    jobId = request.session["job-id"]
+    # get all applications with matching job-id
+    applications = list(Applications.objects.filter(job_id = jobId, recruiter_id = request.session['uid']).values("candidate_id", "compatibility_score"))
+
+    # get and parse data for all candidates who submitted an application
+    for applicant in applications:
+        applicant_info = list(Candidate.objects.filter(id = applicant["candidate_id"]).values("first_name", "last_name", "bio", "yoe", "education", "github", "zip", "skills"))
+        applicant["first_name"] = applicant_info[0]["first_name"]
+        applicant["last_name"] = applicant_info[0]["last_name"]
+        applicant["bio"] = applicant_info[0]["bio"]
+        applicant["yoe"] = applicant_info[0]["yoe"]
+        applicant["education"] = applicant_info[0]["education"]
+        applicant["github"] = applicant_info[0]["github"]
+        applicant["zip"] = applicant_info[0]["zip"]
+        applicant["skills"] = applicant_info[0]["skills"].split(",")
+
+
+    # render page with all applicants for job
+    return render(request, 'app/view_applicants.html', {"applicants": applications})

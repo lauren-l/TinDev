@@ -12,5 +12,6 @@ urlpatterns = [
     path('recruiter_dashboard', views.dashboard_recruiter),
     path('candidate_dashboard', views.dashboard_candidate),
     path('candidate_offers', views.candidate_offers),
-    path('submit_application', views.submit_application)
+    path('submit_application', views.submit_application),
+    path('view_applicants', views.view_applicants)
 ]
