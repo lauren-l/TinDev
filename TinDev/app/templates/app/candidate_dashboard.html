@@ -1,9 +1,9 @@
+<!------ template for candidate dashboard ---->
 {% load static %}
 
 <!DOCTYPE html>
 <html lang="en">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script> <!------ ajax jquery for updating model objects without reloading page ---->
 
 <head>
     <meta charset="UTF-8">
@@ -22,6 +22,7 @@
 </head>
 
 <body>
+    <!------ navbar ---->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">
@@ -47,6 +48,7 @@
     <main>
         <div class="row">
             <div class="col">
+                <!----- candidate profile container on left hand side ---->
                 <div class="profile-container">
                     <br><br>
                     <div class="card-item filter-card">
@@ -72,7 +74,8 @@
                     </div>
                 </div>
             </div>
-
+            
+            <!----- job posts container on left hand side ---->
             <div class="col-8">
                 <div class="jobs-container">
                     <h2 style="display:inline">Search Jobs</h2>
@@ -83,7 +86,7 @@
                         <button type="submit" id="search-button"
                             class="btn btn-primary btn-sm align-middle">Search</button>
                     </form>
-                    <br/><br/>
+                    <br/><br/> <!----- jobs get filered in views ---->
                     {% for job in jobs %}
                     {% include './components/jobPost.html' with job=job %}
                     {% endfor %}
@@ -95,6 +98,8 @@
 
                 {% endif %}
             </div>
+            
+            <!----- job posts container in the middle ---->
             <div class="col">
                 <div class="filter-container">
                     <br/><br/>
@@ -116,6 +121,7 @@
                                 </div>
                             </article>
                         </div><br />
+            <!----- job post filters container on the right hand side ---->
                         <div class="card-item filter-card">
                             <article class="card">
                                 <header class="card-header">

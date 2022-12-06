@@ -1,7 +1,7 @@
+<!------ template for recruiter dashboard page ---->
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -43,16 +43,19 @@
     <main>
         <div style="padding-top:2rem">
             <div style="width:85%; float:left">
+                <!------ create new post function ---->
                 <div style="padding: 0rem 3rem 1rem">
                     <input class="btn btn-primary" value="Create New Post">
                 </div>
                 <div class="post-content">
+                <!------ display jobs based on filtering done in views ---->
                     {% for job in jobs %}
                     {% include './components/recruiterPost.html' with job=job %}
                     {% endfor %}
                 </div>
             </div>
-
+            
+            <!------ job filter options div in RHS ---->
             <div style="width:15%; float:right">
                 <h3 align="center" style="margin-right:1rem">Job Filters</h3>
                 <form method="POST">

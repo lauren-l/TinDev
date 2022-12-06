@@ -5,7 +5,7 @@ from django.core.exceptions import ValidationError
 from .models import *
 from django.forms.widgets import *
 
-# CONSTANTS
+# CONSTANTS (signup dependencies)
 EDU_CHOICES =(
     ("1", "No formal education"),
     ("2", "Coding bootcamp or equivalent"),
@@ -56,7 +56,7 @@ SKILL_CHOICES = (
     ("23", "Natual Language Processing"),
     ("24", "Docker")
 )
-# CUSTOM VALIDATORS
+# CUSTOM VALIDATORS (for forms)
 def clean_first_name(data):
     
     # Check for non alphabet chars
@@ -74,7 +74,6 @@ def clean_last_name(data):
     return data
 
 # recruiter signup form
-
 class RSignUpForm(forms.Form):
 
     first_name = forms.CharField(max_length=50, required=True, validators=[clean_first_name, MaxLengthValidator(50)], label="First Name *")
@@ -88,12 +87,9 @@ class RSignUpForm(forms.Form):
         super().__init__(*args, **kwargs)
         self.label_suffix = ""  # Removes : as label suffix
 
-
-# recruiter signup form
-
+# candidate signup form
 class CSignUpForm(forms.Form):
     
-
     first_name = forms.CharField(max_length=50, required=True, validators=[clean_first_name, MaxLengthValidator(50)], label='First Name *')
     last_name = forms.CharField(max_length=50,required=True, validators=[clean_last_name, MaxLengthValidator(50)], label="Last Name *")
     username = forms.CharField(min_length=4, required=True, validators=[validate_slug, MaxLengthValidator(50)], label="Username *")
@@ -109,6 +105,8 @@ class CSignUpForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.label_suffix = ""  # Removes : as label suffix
+
+# form for recruiter offer to candidate
 class OfferForm(forms.Form):
     salary =  forms.IntegerField(label="Yearly Salary")
     expirationDate = forms.DateTimeField(
@@ -122,4 +120,3 @@ class OfferForm(forms.Form):
             format='%d-%m-%yT%H:%M')
     )
     salary.widget.attrs.update({'class':'form-control input', 'required':'required'})
-    

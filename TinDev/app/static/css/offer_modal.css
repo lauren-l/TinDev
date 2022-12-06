@@ -1,3 +1,5 @@
+/* CSS styles for offers modal */
+
 label {
     margin: auto;
     text-align: left;
@@ -8,9 +10,7 @@ label {
     font-size: 16px;
 }
 
-
-input,
-select {
+input, select {
     display: inline;
     height: 75%;
     padding: 2vh;

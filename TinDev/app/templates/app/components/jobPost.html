@@ -1,4 +1,8 @@
+<!------ template for recruiter job posts ---->
+
 {% load static %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
 <div class="card" style="margin-bottom: 1rem">
     <div class="card-body">
         <!------ Job Cover Image ---->
@@ -6,9 +10,9 @@
             <img src="{% static job.coverImage %}" style="display:flex; justify-content:center;" width="100"
                 height="100" />
             <br>
-            <button type="button" class="btn btn-secondary btn-block"><i class="fa-solid fa-fire" name="post-status-interested" 
+            <button type="button" class="btn btn-secondary btn-block post-status-interested" data-catid="{{ job.id }}"><i class="fa-solid fa-fire " name="post-status-interested"
                 value="{{ interested }}" {{interestedCheckedStatus}}></i> Smash
-            </button>
+            </button>         <!------ Application submitted & compatibility score calculated on button click ---->
             <button type="button" class="btn btn-secondary btn-block"><i class="fa-solid fa-fire-extinguisher" name="post-status-uninterested" 
                 value="{{ uninterested }}" {{uninterestedCheckedStatus}}></i> Pass</button>
         </div>
@@ -58,8 +62,9 @@
     </div>
 </div>
 
+<!------ ajax script to submit application without reloaded page ----->
 <script type="text/javascript">
-    $('.fa-thumbs-up').click(function(){
+    $('.post-status-interested').click(function(){
         var jid;
         jid = $(this).attr("data-catid");
         $.ajax(

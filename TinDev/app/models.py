@@ -1,8 +1,10 @@
+'''
+this file contains models for objects: Candidate, Recruiter, Job, Applications, and Offers
+'''
 from django.db import models
 from django.core.validators import MinLengthValidator
 
-
-# Create your models here.
+# candidate model
 class Candidate(models.Model):
     id = models.AutoField(primary_key=True)
     first_name = models.CharField(max_length=50)
@@ -61,5 +63,3 @@ class Offers(models.Model):
     salary = models.FloatField()
     response = models.BooleanField()
     accepted = models.BooleanField()
-
-

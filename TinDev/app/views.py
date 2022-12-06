@@ -12,7 +12,7 @@ from .forms import RSignUpForm, CSignUpForm, OfferForm
 from .models import *
 from django.db import connection
 
-# CONSTANTS
+# CONSTANTS (compatibility score dependency)
 SKILL_CHOICES = (
     ("1", "Python"),
     ("2", "Tableau"),
@@ -39,7 +39,7 @@ SKILL_CHOICES = (
     ("23", "Natual Language Processing"),
     ("24", "Docker")
 )
-# Create your views here.
+
 def home(request):
     if request.method == 'POST':
         l_username = request.POST.get('username')
@@ -48,9 +48,9 @@ def home(request):
         recruiter = Recruiter.objects.filter(username=l_username, password=l_password)
         candidate = Candidate.objects.filter(username=l_username, password=l_password)
 
+        # storing user information for current session
         if recruiter:
             request.session['uid'] = recruiter[0].id
-            print(request.session['uid'])
             return redirect("/recruiter_dashboard")
         elif candidate:
             request.session['uid'] = candidate[0].id
@@ -73,13 +73,9 @@ def signup_candidate(request):
             # create candidate object
             b1 = Candidate.objects.create(first_name=form.cleaned_data['first_name'], last_name=form.cleaned_data['last_name'], zip=form.cleaned_data['zip'], username=form.cleaned_data['username'], password=form.cleaned_data['password'], bio=form.cleaned_data['bio'], skills=form.cleaned_data['skills'], github=form.cleaned_data['github'], yoe=form.cleaned_data['yoe'], education=form.cleaned_data['education'])
             b1.save()
-
-            # redirect to a new URL:
-            return HttpResponseRedirect('/home')
-            
+            return HttpResponseRedirect('/home') # redirect to home (sign in)
     else:
         form = CSignUpForm()
-        
     return render(request, 'app/signup_candidate.html', {'form': form})
 
 def signup_recruiter(request):
@@ -89,13 +85,9 @@ def signup_recruiter(request):
             # create recruiter object
             b1 = Recruiter.objects.create(first_name=form.cleaned_data['first_name'], last_name=form.cleaned_data['last_name'], company=form.cleaned_data['company'], zip=form.cleaned_data['zip'], username=form.cleaned_data['username'], password=form.cleaned_data['password'])
             b1.save()
-
-            # redirect to a new URL:
-            return HttpResponseRedirect('/home')
-            
+            return HttpResponseRedirect('/home') # redirect to home (sign in)
     else:
         form = RSignUpForm()
-        
     return render(request, 'app/signup_recruiter.html', {'form': form})
 
 # this function demonstrates candate interest & calculates compatibility score upon button click
@@ -108,7 +100,8 @@ def submit_application(request):
         if Applications.objects.filter(job_id=job_id, candidate_id=candidate_id):
             return HttpResponse("Already applied")
         
-        # haven't applied yet
+        # if haven't applied yet
+        # prepare to calculate cscore & submit application
         job = Job.objects.filter(id=job_id)[0]
         job_description = job.description
         recruiter_id = job.author
@@ -117,37 +110,37 @@ def submit_application(request):
         skills = candidate.skills.split(",")
         yoe = candidate.yoe
 
-        # updating num candidates of job
+        # update num candidates of job
         job.numCandidates = job.numCandidates + 1
         job.save()
 
         # calculating compatibility score
-        # skill overlap: 50%
-        # experience: 50%
+        '''
+        skill overlap: 50%
+        experience: 50%
             # (yoe) / (num_candidates + yoe)
             # more candidates => higher yoe => higher compatibility
             # less candidates => lower yoe => higher compatibility
-        # calculations:
+        calculations:
             # evaluate skill_overlap and experience to be out of 100, then take the average of the 2
             # resulting compatibility score should also be out of 100
-
+        '''
         skill_overlap = max(30, (len(skills) / len(SKILL_CHOICES)) * 100)
         experience = max(30, (yoe / (num_candidates + yoe)) * 100)
         cscore = (skill_overlap + experience) // 2
         
+        # create application boject
         application = Applications.objects.create(job_id=job_id, candidate_id=request.session['uid'], compatibility_score=cscore)
+        application.save()
         return HttpResponse("Success")
     
     else: 
         return HttpResponse("Request method is not a GET")
 
-
-
 def dashboard_candidate(request):
-
     context = {}
     candidate_id = request.session['uid']
-    print(candidate_id)
+    keywords = None
 
     # set default post filters
     context["first_name"] = False
@@ -162,15 +155,24 @@ def dashboard_candidate(request):
     context["activeCheckedStatus"] = "checked"
     context["inactiveCheckedStatus"] = "unchecked"
 
+    # if using searchbar or post filters
     if request.method == 'POST':
+        keywords = request.POST.get('post_search_keyword') # check if any search keywords
+        # filter criteria
         context["interested"] = False if request.POST.get('post-status-interested') == None else True
         context["uninterested"] = False if request.POST.get('post-status-uninterested') == None else True
         context["myPosts"] = False if request.POST.get('my-post') == None else True
         context["active"] = False if request.POST.get('post-status-active') == None else True
         context["inactive"] = False if request.POST.get('post-status-inactive') == None else True
         context["numCandidates"] = request.POST.get('candidateRange')
-    
-    if context["interested"] and not context["uninterested"]: # only interested posts
+
+    if keywords: # if using search bar and NOT filter function
+        keywords = set(keywords.lower().split())
+        jobData = list(Job.objects.values("id", "title", "company", "description", "skills", "city", "state", "coverImage", "active", "job_type", "numCandidates", "author"))
+        data = list(filter(lambda x: not keywords.isdisjoint(set(x['description'].lower().split())), jobData)) # filter out jobs that don't have keyword(s) in job description
+            
+    # filter functionality starts here
+    elif context["interested"] and not context["uninterested"]: # only interested posts
         data = list(Job.objects.filter(
             active=True,
             numCandidates__gte = context["numCandidates"]
@@ -217,11 +219,9 @@ def dashboard_candidate(request):
 
     return render(request, 'app/candidate_dashboard.html', context=context)
 
-
 def dashboard_recruiter(request):
     context = {}
     recruiter_id = request.session['uid']
-    print(recruiter_id)
 
     # set default post fitlers
     context["myPosts"] = False
@@ -271,7 +271,6 @@ def dashboard_recruiter(request):
         item["status"] = "Active" if item["active"] else "Inactive"
         # only enable view applicants button if user is the author of the post
         item["viewApplicants"] = "disabled" if str(item['author']) != str(recruiter_id) else ""
-    
     
     context["jobs"] = data
     context["activeCheckedStatus"] = "checked" if context["active"] else "unchecked"
@@ -333,7 +332,6 @@ def view_applicants(request):
         applicant["github"] = applicant_info[0]["github"]
         applicant["zip"] = applicant_info[0]["zip"]
         applicant["skills"] = applicant_info[0]["skills"].split(",")
-
 
     # render page with all applicants for job
     return render(request, 'app/view_applicants.html', {"applicants": applications,"form":form})
