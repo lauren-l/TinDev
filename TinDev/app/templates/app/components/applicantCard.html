@@ -9,11 +9,11 @@
                 </h3>
             </span>
             <div style="padding-bottom:0.5rem"></div>
-            <p class="card-text">{{ applicant.bio }}</p>
+            <p class="card-text">{{ applicant.bio }}</p> <!-- not required field (can be null) -->
             <!------ Additional Applicant Info ---->
             <span>
                 <h6 class="align-top" style="display: inline">Compatibility:</h6>
-                <p class="align-top" style="display: inline">{{ applicant.compatibility_score }}%</p>
+                <p class="align-top" style="display: inline">{{ applicant.compatibility_score }}%</p> <!-- compatibility scores are calculated at show of interest -->
             </span>
             <br>
             <span>
@@ -23,12 +23,12 @@
             <br>
             <span>
                 <h6 class="align-top" style="display: inline">Education:</h6>
-                <p class="align-top" style="display: inline">{{ applicant.education }}</p>
+                <p class="align-top" style="display: inline">{{ applicant.education }}</p> <!-- not required field (can be null) -->
             </span>
             <br>
             <span>
                 <h6 class="align-top" style="display: inline">Github:</h6>
-                <p class="align-top" style="display: inline">{{ applicant.github }}</p>
+                <p class="align-top" style="display: inline">{{ applicant.github }}</p> <!-- not required field (can be null) -->
             </span>
             <br>
             <span>
