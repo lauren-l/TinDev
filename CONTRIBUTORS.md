@@ -1,4 +1,4 @@
-Project contributors (sorted alphabetically)
+Project contributors (sorted alphabetically by last name)
 ============================================
 
 * **[Solina Kim](https://github.com/SolinaKEK)**
