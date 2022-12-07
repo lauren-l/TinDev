@@ -3,6 +3,7 @@ this file contains models for objects: Candidate, Recruiter, Job, Applications, 
 '''
 from django.db import models
 from django.core.validators import MinLengthValidator
+from django.forms import ModelForm
 
 # candidate model
 class Candidate(models.Model):
@@ -63,3 +64,8 @@ class Offers(models.Model):
     salary = models.FloatField()
     response = models.BooleanField()
     accepted = models.BooleanField()
+
+class UpdatePosts(ModelForm):
+    class Meta:
+        model = Job
+        fields = ['author', 'title', 'job_type', 'city', 'state', 'skills', 'description', 'active']

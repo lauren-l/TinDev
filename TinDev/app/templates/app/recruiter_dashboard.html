@@ -14,7 +14,7 @@
     <title>Dashboard | TinDev</title>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="/recruiter_dashboard">
                 <img src="{% static 'images/tindev_combomark.png' %}" alt="" width="150px" class="d-inline-block">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -24,13 +24,7 @@
             <div class="collapse navbar-collapse nav-div" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Features</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Pricing</a>
+                        <a class="nav-link active" aria-current="page" href="/recruiter_dashboard">Dashboard</a>
                     </li>
                 </ul>
             </div>
@@ -45,7 +39,7 @@
             <div style="width:85%; float:left">
                 <!------ create new post function ---->
                 <div style="padding: 0rem 3rem 1rem">
-                    <input class="btn btn-primary" value="Create New Post">
+                    <button class="btn btn-primary" value="Create New Post" onclick="location.href='/create_posts';">Create New Post</button>
                 </div>
                 <div class="post-content">
                 <!------ display jobs based on filtering done in views ---->

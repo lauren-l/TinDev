@@ -2,13 +2,13 @@ from datetime import datetime
 from django.shortcuts import render
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, UpdateView
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.models import User, auth
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.http import HttpResponseRedirect
-from .forms import RSignUpForm, CSignUpForm, OfferForm
+from .forms import RSignUpForm, CSignUpForm, OfferForm, CreatePosts, UpdatePosts
 from .models import *
 from django.db import connection
 
@@ -274,11 +274,15 @@ def dashboard_recruiter(request):
         item["status"] = "Active" if item["active"] else "Inactive"
         # disable view applicants button if user is not the author of the post
         item["viewApplicants"] = "disabled" if str(item['author']) != str(recruiter_id) else ""
+        item["editMyPost"] = "hidden" if str(item['author']) != str(recruiter_id) else ""
     
     context["jobs"] = data
     context["activeCheckedStatus"] = "checked" if context["active"] else "unchecked"
     context["inactiveCheckedStatus"] = "checked" if context["inactive"] else "unchecked"
     context["myPostsCheckedStatus"] = "checked" if context["myPosts"] else "unchecked"
+    
+
+    # prevents user from editing or deleting other recruiters' job posts
 
     return render(request, 'app/recruiter_dashboard.html', context=context)
 
@@ -338,3 +342,52 @@ def view_applicants(request):
 
     # render page with all applicants for job
     return render(request, 'app/view_applicants.html', {"applicants": applications,"form":form})
+
+def create_posts(request):
+    if request.method == 'POST':
+        form = CreatePosts(request.POST)    # takes form from the CreatePosts class in forms.py
+        if form.is_valid():
+
+            # Convert the select all input that are integers to match with skills values
+            skills = ""
+            for count, skill in enumerate(form.cleaned_data['skills']):
+                skills = skills+SKILL_CHOICES[int(skill)][1]                
+                if count != len(form.cleaned_data['skills'])-1:
+                    skills = skills + ", "
+
+            # create objects based on user input and save
+            b1 = Job.objects.create(author=request.session['uid'], title=form.cleaned_data['title'], job_type=form.cleaned_data['job_type'], city=form.cleaned_data['city'], state=form.cleaned_data['state'], skills=skills, description=form.cleaned_data['description'], company=form.cleaned_data['company'], expiration=form.cleaned_data['expiration'], active=form.cleaned_data['active'], numCandidates=0)
+            b1.save()
+
+            # redirect to dashboard again
+            return HttpResponseRedirect('/recruiter_dashboard')
+            
+    else:
+        form = CreatePosts()
+        
+    return render(request, 'app/create_posts.html', {'form': form})
+
+def update_posts(request, pk):
+    # model = Job
+    # template = 'update_posts.html'
+    # fields = ['author', 'title', 'job_type', 'city', 'state', 'skills', 'description', 'active']
+
+    if request.method == 'POST':
+        job_post=Job.objects.get(pk=pk)
+        form = UpdatePosts(request.POST, instance=job_post)
+        if form.is_valid():
+            # update the post
+            form.save()
+            # redirect to same update page URL:
+            return HttpResponseRedirect('/update_posts/'+str(pk))
+            
+    else:
+        job_post=Job.objects.get(pk=pk)
+        form = UpdatePosts(instance=job_post)
+        return render(request, 'app/update_posts.html', {'form': form})  
+        
+
+def delete_posts(request, pk):
+    Job.objects.filter(pk=pk).delete()
+    return HttpResponseRedirect('/recruiter_dashboard')
+

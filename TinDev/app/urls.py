@@ -1,6 +1,7 @@
 from django.urls import path
-
 from . import views
+from .views import UpdatePosts
+
 app_name = 'app'
 
 urlpatterns = [
@@ -13,5 +14,9 @@ urlpatterns = [
     path('candidate_dashboard', views.dashboard_candidate),
     path('candidate_offers', views.candidate_offers),
     path('submit_application', views.submit_application),
-    path('view_applicants', views.view_applicants)
+    path('view_applicants', views.view_applicants),
+    path('create_posts', views.create_posts),
+    path('delete_posts/<int:pk>', views.delete_posts),
+    path('update_posts/<int:pk>', views.update_posts, name='update_posts')
+    # path('update_posts/<int:pk>', UpdatePosts.as_view(), name='update_posts')
 ]
