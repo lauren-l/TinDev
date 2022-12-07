@@ -378,3 +378,8 @@ def update_posts(request):
         form = CreatePosts(initial={"title":request.session['last_job'].title})
         
     return render(request, 'app/update_posts.html', {'form': form})
+
+def delete_posts(request, pk):
+    Job.objects.filter(pk=pk).delete()
+    return HttpResponseRedirect('/recruiter_dashboard')
+

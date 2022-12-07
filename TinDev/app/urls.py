@@ -14,6 +14,7 @@ urlpatterns = [
     path('candidate_offers', views.candidate_offers),
     path('submit_application', views.submit_application),
     path('view_applicants', views.view_applicants),
-    path('create_posts', views.create_posts)
+    path('create_posts', views.create_posts),
+    path('delete_posts/<int:pk>', views.delete_posts)
     # path('update_posts/<int:pk>', views.update_posts)
 ]
