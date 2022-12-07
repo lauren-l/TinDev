@@ -9,12 +9,6 @@
         <div style="width:15%; float:left">
             <img src="{% static job.coverImage %}" style="display:flex; justify-content:center;" width="100"
                 height="100" />
-            <br>
-            <button type="button" class="btn btn-secondary btn-block post-status-interested" data-catid="{{ job.id }}"><i class="fa-solid fa-fire " name="post-status-interested"
-                value="{{ interested }}" {{interestedCheckedStatus}}></i> Smash
-            </button>         <!------ Application submitted & compatibility score calculated on button click ---->
-            <button type="button" class="btn btn-secondary btn-block"><i class="fa-solid fa-fire-extinguisher" name="post-status-uninterested" 
-                value="{{ uninterested }}" {{uninterestedCheckedStatus}}></i> Pass</button>
         </div>
         <div style="width:85%; float:right">
             <span class="job-title">
@@ -49,13 +43,21 @@
                 {% endfor %}
 
                 <!------ Button to apply to job ---->
-                <form method="POST">
+                <!------ Application submitted & compatibility score calculated on button click ---->
+                <!-- <form method="POST"> -->
                     {% csrf_token %}
-                    <button id="search-button" type="submit" class="btn btn-primary btn-md align-middle"
-                        name="apply" value="{{ job.id }}" style="float:right">
-                        <h6 style="display: inline;">Apply</h6>
+                    <button style="display: inline; float:right;" type="button" type="submit" class="btn btn-secondary btn-block post-status-interested" data-catid="{{ job.id }}">
+                        <i style="display: inline;" class="fa-solid fa-fire" name="post-status-interested" 
+                            value="{{interested}}" {{interestedCheckedStatus}}></i> 
+                        <h6 >SMASH!</h6>
+                    </button>     
+
+                    <button style="display: inline; float:right;" type="button" type="submit" class="btn btn-secondary btn-block" data-catid="{{ job.id }}">
+                        <i style="display: inline;" class="fa-solid fa-fire-extinguisher" name="post-status-uninterested" 
+                            value="{{ uninterested }}" {{uninterestedCheckedStatus}}></i> 
+                        <h6>Pass...</h6>
                     </button>
-                </form>
+                <!-- </form> -->
 
             </span>
         </div>
