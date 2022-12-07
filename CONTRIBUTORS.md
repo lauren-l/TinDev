@@ -19,10 +19,26 @@ Project contributors (sorted alphabetically by last name)
     * Implemented backend to automatically calculate and save compatibility score upon candidate demonstrating interest.
     * Designed formula to calculate compatibility score.
 
-* **[Lauren Lee](https://github.com/team-member-2-github)**
+* **[Lauren Lee](https://github.com/lauren-l)**
+  * Recruiter Dashboard
+    * Created job post components with html and django
+      * Implemented backend functionality to render card with desired information
+      * Implemented backend functionality to link each card with matching view applicants portal
+    * Created template for recruiter dashboard page
+    * Connected front and back end in views
+    * Implemented post filters
+  * View Applicants Portal
+    * Created models for applicants and offers
+    * Created applicant info card with html and django
+      * Implemented backend functionality to render card with desired information
+    * Implemented send offers functionality
+      * Designed and created modal that updates offers or creates a new offer if no pre-existing offer exists
+      * Created Django form to get offer details
+    * Created template for view applicants page
+    * Connected front and back end in views
+  * Database
+    * Pre-populated database with candidate, recruiter, job, and offer info 
 
-  * ... contribution 1 description ...
-  * ... contribution 2 description ...
 
 * **[Christian Matthew](https://github.com/team-member-2-github)**
 

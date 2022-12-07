@@ -228,6 +228,8 @@ def dashboard_recruiter(request):
     context["active"] = True
     context["inactive"] = False
     context["numCandidates"] = 0
+
+    # checked status = status of checkbox
     context["myPostsCheckedStatus"] = "unchecked"
     context["activeCheckedStatus"] = "checked"
     context["inactiveCheckedStatus"] = "unchecked"
@@ -238,10 +240,11 @@ def dashboard_recruiter(request):
             # redirect to view applicant portal w/ job id
             request.session['job-id'] = request.POST.get("view-applicants")
             return redirect(f'/view_applicants')
-        context["myPosts"] = False if request.POST.get('my-post') == None else True
-        context["active"] = False if request.POST.get('post-status-active') == None else True
-        context["inactive"] = False if request.POST.get('post-status-inactive') == None else True
-        context["numCandidates"] = request.POST.get('candidateRange')
+        else:
+            context["myPosts"] = False if request.POST.get('my-post') == None else True
+            context["active"] = False if request.POST.get('post-status-active') == None else True
+            context["inactive"] = False if request.POST.get('post-status-inactive') == None else True
+            context["numCandidates"] = request.POST.get('candidateRange')
     
     if context["active"] and not context["inactive"]: # only active posts
         data = list(Job.objects.filter(
@@ -253,23 +256,23 @@ def dashboard_recruiter(request):
             active=False,
             numCandidates__gte = context["numCandidates"]
         ).values("id", "title", "company", "description", "skills", "city", "state", "coverImage", "active", "job_type", "numCandidates", "author"))
-    elif context["active"] and context["inactive"]:
+    elif context["active"] and context["inactive"]: # both active and inactive posts
         data = list(Job.objects.filter(
             numCandidates__gte = context["numCandidates"]
         ).values("id", "title", "company", "description", "skills", "city", "state", "coverImage", "active", "job_type", "numCandidates", "author"))
-    else:
+    else: # no posts (neither active nor inactive)
         data = []
 
     # filtering data to only include jobs of current user/recruiter
     if context["myPosts"]:
         data = list(filter(lambda x: str(x['author']) == str(recruiter_id), data))
     
-    for item in data:
+    for item in data: # clean job info in context
         item["numCandidates"] = str(item["numCandidates"])
         item["coverImage"] = item["coverImage"].replace("app/static/", "")
         item["skills"] = list(item["skills"].split(","))
         item["status"] = "Active" if item["active"] else "Inactive"
-        # only enable view applicants button if user is the author of the post
+        # disable view applicants button if user is not the author of the post
         item["viewApplicants"] = "disabled" if str(item['author']) != str(recruiter_id) else ""
     
     context["jobs"] = data
@@ -298,19 +301,18 @@ def view_applicants(request):
     applications = list(Applications.objects.filter(job_id = jobId, recruiter_id = request.session['uid']).values("candidate_id", "compatibility_score"))
 
     if request.method == 'POST':
-        for key, value in request.POST.items():
-            print(f'Key: {key}')
-            print(f'Value: {value}')
         # if an offer was sent
         form = OfferForm(request.POST)
 
-        # get the salary + expiration date
+        # get applicant id (id of candidate)
         applicant_id = request.POST.get("applicant-id")
 
+        # get the salary + expiration date entered
         if form.is_valid():
             Nsalary = form.cleaned_data['salary']
             expiration = form.cleaned_data["expirationDate"]
 
+        # query database for offer w/ matching details (candidate -> job)
         existingOffer = Offers.objects.get(job_id=jobId, candidate_id=applicant_id)
         
         if existingOffer:
@@ -318,9 +320,10 @@ def view_applicants(request):
             existingOffer.salary=Nsalary
             existingOffer.offerDeadline= expiration
             existingOffer.save()
-        else:
+        else: # if no preexisting offer, create new offer
             b1 = Offers.objects.create(job_id=jobId, candidate_id=applicant_id, recruiter_id=request.session["uid"],offerDeadline=expiration, salary=Nsalary, response=False, accepted=False)
             b1.save()
+            
     # get and parse data for all candidates who submitted an application
     for applicant in applications:
         applicant_info = list(Candidate.objects.filter(id = applicant["candidate_id"]).values("first_name", "last_name", "bio", "yoe", "education", "github", "zip", "skills"))

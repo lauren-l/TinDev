@@ -13,7 +13,8 @@
             <!------ Additional Applicant Info ---->
             <span>
                 <h6 class="align-top" style="display: inline">Compatibility:</h6>
-                <p class="align-top" style="display: inline">{{ applicant.compatibility_score }}%</p> <!-- compatibility scores are calculated at show of interest -->
+                <p class="align-top" style="display: inline">{{ applicant.compatibility_score }}%</p>
+                <!-- compatibility scores are calculated at show of interest -->
             </span>
             <br>
             <span>
@@ -23,12 +24,14 @@
             <br>
             <span>
                 <h6 class="align-top" style="display: inline">Education:</h6>
-                <p class="align-top" style="display: inline">{{ applicant.education }}</p> <!-- not required field (can be null) -->
+                <p class="align-top" style="display: inline">{{ applicant.education }}</p>
+                <!-- not required field (can be null) -->
             </span>
             <br>
             <span>
                 <h6 class="align-top" style="display: inline">Github:</h6>
-                <p class="align-top" style="display: inline">{{ applicant.github }}</p> <!-- not required field (can be null) -->
+                <p class="align-top" style="display: inline">{{ applicant.github }}</p>
+                <!-- not required field (can be null) -->
             </span>
             <br>
             <span>
@@ -41,11 +44,12 @@
                 {% for skill in applicant.skills %}
                 <a class="btn btn btn-outline-primary btn-sm align-middle">{{ skill }}</a>
                 {% endfor %}
+                <!-----button to open applicant-specifc offer modal----->
                 <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
                     data-target="#offerModal-{{ applicant.candidate_id }}" style="float:right">
                     Extend Offer
                 </button>
-
+                <!----use offer modal template for specific applicant---->
                 {% include './offerModal.html' with applicant=applicant form=form%}
             </span>
         </div>
