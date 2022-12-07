@@ -60,9 +60,10 @@ SKILL_CHOICES = (
 # CUSTOM VALIDATORS (for forms)
 def validate_zip(data):
     if not data.isnumeric():
+        print(data.isnumeric())
         raise ValidationError("Invalid zipcode: non-numeric characters")
     return data
-    
+
 def clean_first_name(data):
     
     # Check for non alphabet chars
@@ -100,7 +101,7 @@ class CSignUpForm(forms.Form):
     last_name = forms.CharField(max_length=50,required=True, validators=[clean_last_name, MaxLengthValidator(50)], label="Last Name *")
     username = forms.CharField(min_length=4, required=True, validators=[validate_slug, MaxLengthValidator(50)], label="Username *")
     password = forms.CharField(min_length=8, required=True, validators=[validate_slug, MaxLengthValidator(50)], widget=forms.PasswordInput, label="Password *")
-    zip = forms.CharField(required=True, validators=[MinLengthValidator(5), MaxLengthValidator(5)], label="Zipcode *")
+    zip = forms.CharField(required=True, validators=[MinLengthValidator(5), MaxLengthValidator(5), validate_zip], label="Zipcode *")
 
     bio = forms.CharField(max_length=500, required=False, validators=[MaxLengthValidator(500)], label="Bio")
     github = forms.URLField(max_length=50, required=False, validators=[URLValidator, MaxLengthValidator(50)], label="Github Link")
