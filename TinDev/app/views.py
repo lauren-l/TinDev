@@ -8,7 +8,7 @@ from django.contrib.auth.models import User, auth
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.http import HttpResponseRedirect
-from .forms import RSignUpForm, CSignUpForm, OfferForm
+from .forms import RSignUpForm, CSignUpForm, OfferForm, CreatePosts
 from .models import *
 from django.db import connection
 
@@ -335,3 +335,42 @@ def view_applicants(request):
 
     # render page with all applicants for job
     return render(request, 'app/view_applicants.html', {"applicants": applications,"form":form})
+
+def create_posts(request):
+    if request.method == 'POST':
+        form = CreatePosts(request.POST)    # takes form from the CreatePosts class in forms.py
+        if form.is_valid():
+
+            # Convert the select all input that are integers to match with skills values
+            skills = ""
+            for count, skill in enumerate(form.cleaned_data['skills']):
+                skills = skills+SKILL_CHOICES[int(skill)][1]                
+                if count != len(form.cleaned_data['skills'])-1:
+                    skills = skills + ", "
+
+            # create objects based on user input and save
+            b1 = Job.objects.create(author=request.session['uid'], title=form.cleaned_data['title'], job_type=form.cleaned_data['job_type'], city=form.cleaned_data['city'], state=form.cleaned_data['state'], skills=skills, description=form.cleaned_data['description'], company=form.cleaned_data['company'], expiration=form.cleaned_data['expiration'], active=form.cleaned_data['active'], numCandidates=0)
+            b1.save()
+
+            # redirect to dashboard again
+            return HttpResponseRedirect('/recruiter_dashboard')
+            
+    else:
+        form = CreatePosts()
+        
+    return render(request, 'app/create_posts.html', {'form': form})
+
+def update_posts(request):
+    if request.method == 'POST':
+        form = CreatePosts(request.POST)
+        if form.is_valid():
+            # create candidate object
+            b1 = Job.objects.update(author=request.session['full_name'], title=form.cleaned_data['title'], job_type=form.cleaned_data['job_type'], city=form.cleaned_data['city'], state=form.cleaned_data['state'], skills=form.cleaned_data['skills'], description=form.cleaned_data['description'], company=form.cleaned_data['company'], expiration=form.cleaned_data['expiration'], active=form.cleaned_data['active'], numCandidates=0)
+
+            # redirect to a new URL:
+            return HttpResponseRedirect('/update_posts')
+            
+    else:
+        form = CreatePosts(initial={"title":request.session['last_job'].title})
+        
+    return render(request, 'app/update_posts.html', {'form': form})
