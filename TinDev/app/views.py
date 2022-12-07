@@ -271,11 +271,15 @@ def dashboard_recruiter(request):
         item["status"] = "Active" if item["active"] else "Inactive"
         # only enable view applicants button if user is the author of the post
         item["viewApplicants"] = "disabled" if str(item['author']) != str(recruiter_id) else ""
+        item["editMyPost"] = "hidden" if str(item['author']) != str(recruiter_id) else ""
     
     context["jobs"] = data
     context["activeCheckedStatus"] = "checked" if context["active"] else "unchecked"
     context["inactiveCheckedStatus"] = "checked" if context["inactive"] else "unchecked"
     context["myPostsCheckedStatus"] = "checked" if context["myPosts"] else "unchecked"
+    
+
+    # prevents user from editing or deleting other recruiters' job posts
 
     return render(request, 'app/recruiter_dashboard.html', context=context)
 
