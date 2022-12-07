@@ -48,10 +48,11 @@ Describe here the list of steps to get your project running. For example:
 cd into Tindev/Tindev, then run `python3 manage.py runserver`
 
 ### Accessing pages
-Home page can be viewed at http://localhost:8000/home
+Home page can be viewed at http://localhost:8000/ or http://localhost:8000/home
 
-Candidate Signup can be viewed at http://localhost:8000/signup_candidate  
-Recruiter Signup can be viewed at http://localhost:8000/signup_recruiter
+Current user information[^1] (10 recruiters, 10 candidates) can be viewed via:
+  https://docs.google.com/spreadsheets/d/1S8LFusJNuBiDUVzQEXClhF5as4ttI8G8_bJ_4_FhVcU/edit?usp=sharing
 
-Candidate Dashboard can be viewed at http://localhost:8000/candidate_dashboard  
-Recruiter Dashboard can be viewed at http://localhost:8000/recruiter_dashboard
+
+[^1]: information other than usernames and passwords may not match with info in the database
+

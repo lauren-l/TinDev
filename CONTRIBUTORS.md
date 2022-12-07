@@ -36,6 +36,8 @@ Project contributors (sorted alphabetically by last name)
       * Created Django form to get offer details
     * Created template for view applicants page
     * Connected front and back end in views
+  * Candidate Dashboard
+    * Implemented Backend for post filters
   * Database
     * Pre-populated database with candidate, recruiter, job, and offer info 
 
