@@ -1,17 +1,28 @@
 <!------ template for applicant on viewApplicantsPortal ---->
 {% load static %}
-<div class="card" style="margin-bottom: 1rem">
+<div class="card" style="margin-bottom: 1rem" display="inline">
     <div class="card-body">
         <div>
             <span class="applicant-name">
                 <h3 class="card-title align-middle" style="display:inline; padding-right: 1rem;">
                     {{ applicant.first_name }} {{ applicant.last_name }}
                 </h3>
-                <h6 class="align-bottom" style="display:inline">{{ applicant.compatibility_score }}</h6>
             </span>
             <div style="padding-bottom:0.5rem"></div>
-            <p class="card-text">{{ applicant.bio }}</p>
+            <p class="card-text">{{ applicant.bio }}</p> <!-- not required field (can be null) -->
             <!------ Additional Applicant Info ---->
+            <span>
+                <h6 class="align-top" style="display: inline">Offer Status:</h6>
+                <p class="align-top" style="display: inline">{{ applicant.offer_status }}</p>
+                <!-- compatibility scores are calculated at show of interest -->
+            </span>
+            <br>
+            <span>
+                <h6 class="align-top" style="display: inline">Compatibility:</h6>
+                <p class="align-top" style="display: inline">{{ applicant.compatibility_score }}%</p>
+                <!-- compatibility scores are calculated at show of interest -->
+            </span>
+            <br>
             <span>
                 <h6 class="align-top" style="display: inline">Years of Experience:</h6>
                 <p class="align-top" style="display: inline">{{ applicant.yoe }}</p>
@@ -20,15 +31,17 @@
             <span>
                 <h6 class="align-top" style="display: inline">Education:</h6>
                 <p class="align-top" style="display: inline">{{ applicant.education }}</p>
+                <!-- not required field (can be null) -->
             </span>
             <br>
             <span>
                 <h6 class="align-top" style="display: inline">Github:</h6>
                 <p class="align-top" style="display: inline">{{ applicant.github }}</p>
+                <!-- not required field (can be null) -->
             </span>
             <br>
             <span>
-                <h6 class="align-top" style="display: inline">Location:</h6>
+                <h6 class="align-top" style="display: inline">Location (Zipcode):</h6>
                 <p class="align-top" style="display: inline">{{ applicant.zip }}</p>
             </span>
             <br>
@@ -37,14 +50,13 @@
                 {% for skill in applicant.skills %}
                 <a class="btn btn btn-outline-primary btn-sm align-middle">{{ skill }}</a>
                 {% endfor %}
-
-                <!------ Button to view applicants ---->
-                <!------
-                <button id="search-button" class="btn btn-primary btn-sm align-middle" style="float: right">
-                    <p style="display: inline;">View </p> {{ job.numCandidates }} <p style="display: inline;">
-                        Applicants</p>
+                <!-----button to open applicant-specifc offer modal----->
+                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
+                    data-target="#offerModal-{{ applicant.candidate_id }}" style="float:right">
+                    Extend Offer
                 </button>
-                ---->
+                <!----use offer modal template for specific applicant---->
+                {% include './offerModal.html' with applicant=applicant form=form%}
             </span>
         </div>
     </div>

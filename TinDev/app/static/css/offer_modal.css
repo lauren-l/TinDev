@@ -1,0 +1,22 @@
+/* CSS styles for offers modal */
+
+label {
+    margin: auto;
+    text-align: left;
+    width: 40%;
+    margin-bottom: 1vh;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+}
+
+input, select {
+    display: inline;
+    height: 75%;
+    padding: 2vh;
+    margin-bottom: 1vh;
+}
+
+.return-button {
+    width: auto !important
+}

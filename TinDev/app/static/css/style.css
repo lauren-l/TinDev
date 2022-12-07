@@ -1,5 +1,9 @@
+/* base CSS styles ALL pages
+   All page-specific CSS styles inherit this file
+*/
+
 body {
-  background: #f6f6f6;
+  background: #fcfcfc;
   width: 100vw;
 }
 
@@ -99,6 +103,11 @@ p {
 
 .navbar {
   padding: 20px;
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+.nav-div {
   padding-left: 30px;
   padding-right: 30px;
 }

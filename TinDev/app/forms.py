@@ -1,10 +1,12 @@
+import datetime
 from django import forms
+from django.forms import ModelForm
 from django.core.validators import *
 from django.core.exceptions import ValidationError
 from .models import *
 from django.forms.widgets import *
 
-# CONSTANTS
+# CONSTANTS (signup dependencies)
 EDU_CHOICES =(
     ("1", "No formal education"),
     ("2", "Coding bootcamp or equivalent"),
@@ -55,7 +57,7 @@ SKILL_CHOICES = (
     ("23", "Natual Language Processing"),
     ("24", "Docker")
 )
-# CUSTOM VALIDATORS
+# CUSTOM VALIDATORS (for forms)
 def clean_first_name(data):
     
     # Check for non alphabet chars
@@ -73,7 +75,6 @@ def clean_last_name(data):
     return data
 
 # recruiter signup form
-
 class RSignUpForm(forms.Form):
 
     first_name = forms.CharField(max_length=50, required=True, validators=[clean_first_name, MaxLengthValidator(50)], label="First Name *")
@@ -87,12 +88,9 @@ class RSignUpForm(forms.Form):
         super().__init__(*args, **kwargs)
         self.label_suffix = ""  # Removes : as label suffix
 
-
-# recruiter signup form
-
+# candidate signup form
 class CSignUpForm(forms.Form):
     
-
     first_name = forms.CharField(max_length=50, required=True, validators=[clean_first_name, MaxLengthValidator(50)], label='First Name *')
     last_name = forms.CharField(max_length=50,required=True, validators=[clean_last_name, MaxLengthValidator(50)], label="Last Name *")
     username = forms.CharField(min_length=4, required=True, validators=[validate_slug, MaxLengthValidator(50)], label="Username *")
@@ -108,4 +106,34 @@ class CSignUpForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.label_suffix = ""  # Removes : as label suffix
-    
+
+# form for recruiter offer to candidate
+class OfferForm(forms.Form):
+    salary =  forms.IntegerField(label="Yearly Salary")
+    expirationDate = forms.DateTimeField(
+        input_formats = ['%d-%m-%yT%H:%M'],
+        initial=datetime.datetime.now,
+        widget = forms.DateTimeInput(
+            attrs={
+                'type': 'datetime-local',
+                'class': 'form-control input',
+                'required':'required'},
+            format='%d-%m-%yT%H:%M')
+    )
+    salary.widget.attrs.update({'class':'form-control input', 'required':'required'})
+
+class CreatePosts(forms.Form):
+    title = forms.CharField(max_length=50, required=True, label='Title *', validators=[validate_slug, MaxLengthValidator(50)])
+    job_type = forms.CharField(max_length=50, required=True, label='Job Type *', validators=[validate_slug, MaxLengthValidator(50)])
+    city = forms.CharField(max_length=50, required=True, label='City *', validators=[validate_slug, MaxLengthValidator(50)])
+    state = forms.CharField(max_length=30, required=True, label='State *', validators=[validate_slug, MaxLengthValidator(50)])
+    skills = forms.MultipleChoiceField(choices = SKILL_CHOICES, required=True, label="Skills *")
+    description = forms.CharField(required=True, label='Description *', validators=[validate_slug, MaxLengthValidator(50)])
+    company = forms.CharField(max_length=50, required=True, label='Company *', validators=[validate_slug, MaxLengthValidator(50)])
+    expiration = forms.DateTimeField(required=True, label='Expiration Date (yyyy-mm-dd hh:mm:ss) *')
+    active = forms.BooleanField(label='Active')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.label_suffix = ""  # Removes : as label suffix
+   

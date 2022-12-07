@@ -1,3 +1,5 @@
+/* CSS styles for candidate dashboard page */
+
 main {
     padding: 20px;
 }
@@ -17,8 +19,6 @@ main {
 
 .job-container {
     border: solid;
-    /* border-color: grey !important;
-    border-radius: 10px; */
     padding: 10px;
     margin: 5px;
 }
@@ -59,5 +59,4 @@ p.search-result-message{
     transform: translateY(-50%);
     -ms-transform: translateX(-50%);
     transform: translateX(-50%);
-
   }

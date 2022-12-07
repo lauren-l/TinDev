@@ -1,3 +1,4 @@
+/* CSS styles for signup page */
 
 div.container {
     width: 100%;
@@ -25,7 +26,6 @@ p.instructions {
     padding: 2vw;
 }
 
-
 #form-body {
     width: 90%;
     background-color: #E8E8E8;
@@ -46,7 +46,6 @@ label {
     font-weight: 400;
     font-size: 16px;
 }
-
 
 input, select {
     width: 60%;

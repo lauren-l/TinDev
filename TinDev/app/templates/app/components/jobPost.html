@@ -1,84 +1,72 @@
+<!------ template for recruiter job posts ---->
+
 {% load static %}
-<link rel="stylesheet" href="{% static 'css/style.css' %}">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 
-<div class="job-container">
-    <div class="row">
-        <div class="col-2">
-            <img src="#" class="img-thumbnail">
+<div class="card" style="margin-bottom: 1rem">
+    <div class="card-body">
+        <!------ Job Cover Image ---->
+        <div style="width:15%; float:left">
+            <img src="{% static job.coverImage %}" style="display:flex; justify-content:center;" width="100"
+                height="100" />
         </div>
-        <div class="col-8">
-            <h4 style="display:inline">{{ job.title }}  </h4>
-            <h6 class="align-items-center" style="display:inline; padding-left: 1rem;">{{ job.company }}</h6>
-            <p>{{ job.description }}</p>
-            <div id="location">
-                <h6 style="display:inline">Location: </h6>
-                <p style="display:inline">{{ job.city }}, {{ job.state }}</p>
-            </div>
-            <div id="skills">
-                <div class="d-flex flex-row align-items-center">
-                    <h6 style="display:inline">Skills: </h6>
-                    <p style="display:inline">
-                        {% for skill in job.skills %}
-                        <button type="button" class="btn btn-outline-primary btn-sm">{{ skill }}</button>
-                        {% endfor %}
-                    </p>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="d flex-row">
-                <button type="button" class="btn btn-primary btn-sm"><i
-                        class="fa-solid fa-thumbs-up" data-catid="{{ job.id }}"></i></button>
-                <button type="button" class="btn btn-primary btn-sm"><i
-                        class="fa-solid fa-thumbs-down"></i></button>
-            </div>
-            <!-- Button trigger modal -->
-            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-            data-bs-target="#exampleModal" style="float: right">Learn More</button>
-            <button type="button" class="btn btn-success btn-sm" style="float: right">Apply</button>
-            <!-- Modal -->
-            <div class="modal fade" id="exampleModal" data-bs-backdrop="static" data-bs-keyboard="false"
-                tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Post</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                aria-label="Close"></button>
-                        </div>
+        <div style="width:85%; float:right">
+            <span class="job-title">
+                <h3 class="card-title align-middle" style="display:inline; padding-right: 1rem;">
+                    {{ job.title }}
+                </h3>
+                <h6 class="align-bottom" style="display:inline">{{ job.company }}</h6>
+                <!------ Drop down menu for individual post options ---->
+            </span>
+            <div style="padding-bottom:0.5rem"></div>
+            <p class="card-text">{{ job.description }}</p>
+            <!------ Additional Job Info ---->
+            <span>
+                <h6 class="align-top" style="display: inline">Status:</h6>
+                <p class="align-top" style="display: inline">{{ job.status }}</p>
+            </span>
+            <br>
+            <span>
+                <h6 class="align-top" style="display: inline">Type:</h6>
+                <p class="align-top" style="display: inline">{{ job.job_type }}</p>
+            </span>
+            <br>
+            <span>
+                <h6 class="align-top" style="display: inline">Location:</h6>
+                <p class="align-top" style="display: inline">{{ job.city }}, {{ job.state }}</p>
+            </span>
+            <br>
+            <span>
+                <h6 class="align-middle" style="display: inline">Skills:</h6>
+                {% for skill in job.skills %}
+                <a class="btn btn btn-outline-primary btn-sm align-middle">{{ skill }}</a>
+                {% endfor %}
 
-                        <div class="modal-body">
-                            <div class="row">
-                                <div class="col-3">
-                                    <img src="#" class="img-thumbnail">
-                                </div>
-                                <div class="col-9">
-                                    <h4>{{ job.company }}</h4>
-                                    <p>{{ job.job_type }} | {{ job.city }}, {{ job.state }} </p>
-                                </div>
-                                <p>{{ job.description }}</p>
-                                <p>Skills:
-                                    {% for skill in job.skills %}
-                                    <button type="button" class="btn btn-outline-primary btn-sm">{{ skill }}</button>
-                                    {% endfor %}
-                                </p>
-                            </div>
-                        </div>
+                <!------ Button to apply to job ---->
+                <!------ Application submitted & compatibility score calculated on button click ---->
+                <!-- <form method="POST"> -->
+                    {% csrf_token %}
+                    <button style="display: inline; float:right;" type="button" type="submit" class="btn btn-secondary btn-block post-status-interested" data-catid="{{ job.id }}">
+                        <i style="display: inline;" class="fa-solid fa-fire" name="post-status-interested" 
+                            value="{{interested}}" {{interestedCheckedStatus}}></i> 
+                        <h6 >SMASH!</h6>
+                    </button>     
 
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary"
-                                data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Apply</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                    <button style="display: inline; float:right;" type="button" type="submit" class="btn btn-secondary btn-block" data-catid="{{ job.id }}">
+                        <i style="display: inline;" class="fa-solid fa-fire-extinguisher" name="post-status-uninterested" 
+                            value="{{ uninterested }}" {{uninterestedCheckedStatus}}></i> 
+                        <h6>Pass...</h6>
+                    </button>
+                <!-- </form> -->
+
+            </span>
         </div>
     </div>
 </div>
+
+<!------ ajax script to submit application without reloaded page ----->
 <script type="text/javascript">
-    $('.fa-thumbs-up').click(function(){
+    $('.post-status-interested').click(function(){
         var jid;
         jid = $(this).attr("data-catid");
         $.ajax(

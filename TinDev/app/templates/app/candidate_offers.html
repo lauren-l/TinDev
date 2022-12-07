@@ -1,7 +1,9 @@
+<!------ template for candidate offers page ---->
 {% load static %}
 
 <!DOCTYPE html>
 <html lang="en">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script> <!------ ajax jquery for updating model objects without reloading page ---->
 
 <head>
     <meta charset="UTF-8">
@@ -19,77 +21,34 @@
 </head>
 
 <body>
-    <main>
-        <div class="container">
-            <div class="row">
-                <div class="col-3">
-                    <div class="row">
-                        <div class="d-flex justify-content-center">
-                            <h2>Inbox</h2>
-                        </div>
-                    </div>
-                    <div class="row align-content-center">
-                        <div class="d-flex row-md-10 justify-content-center">
-                            <div class="col-sm-3">
-                                <img src="#" class="img-thumbnail">
-                            </div>
-                            <div class="col-sm-9">
-                                <h6>Name</h6>
-                                <p>Company</p>
-                            </div>
-                        </div>
-                        <div class="d-flex row-md-10 justify-content-center">
-                            <div class="col-sm-3">
-                                <img src="#" class="img-thumbnail">
-                            </div>
-                            <div class="col-sm-9">
-                                <h6>Name</h6>
-                                <p>Company</p>
-                            </div>
-                        </div>
-                        <div class="d-flex row-md-10 justify-content-center">
-                            <div class="col-sm-3">
-                                <img src="#" class="img-thumbnail">
-                            </div>
-                            <div class="col-sm-9">
-                                <h6>Name</h6>
-                                <p>Company</p>
-                            </div>
-                        </div>
-                        <div class="d-flex row-md-10 justify-content-center">
-                            <div class="col-sm-3">
-                                <img src="#" class="img-thumbnail">
-                            </div>
-                            <div class="col-sm-9">
-                                <h6>Name</h6>
-                                <p>Company</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-9">
-                    <div class="row">
-                        <h2>Duran Williams</h2>
-                        <h5 class="text-muted">Lead College Recruiting Manager @ AT&T</h5>
-                    </div>
-                    <div class="test">
-                        <div class="row justify-content-center">
-                            <div class="col-md-12">
-                                <p>Wed, Nov 2, 4:25 PM</p>
-                                <p>Greetings, Paul!</p>
-                                <p>I'm a recruiter at AT&T, and I think you'll be a great fit for our Systems & Dev Ops Engineer Internship position!</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="d-flex">
-                            <p>Expires: 12/2/22 </p>
-                            <button type="button" class="btn btn-primary btn-sm">Decline</button>
-                            <button type="button" class="btn btn-primary btn-sm">Accept</button>
-                        </div>
-                    </div>
-                </div>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <img src="{% static 'images/tindev_combomark.png' %}" alt="" width="150px" class="d-inline-block">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse nav-div justify-content-center" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/candidate_dashboard">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/candidate_offers">Offers</a>
+                    </li>
+                </ul>
             </div>
+            <button type="button" class="btn btn-secondary btn-block" onclick="location.href='/logout'">Log out</button>
+        </div>
+    </nav>
+    <main>
+        <div style="margin: 25px">
+            <h2 style="justify-content: center">My Offers</h2>
+            {% for offer in offers %}
+                {% include './components/offerCard.html' with offer=offer %}
+            {% endfor %}
         </div>
     </main>
 
