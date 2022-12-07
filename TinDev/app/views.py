@@ -101,9 +101,15 @@ def submit_application(request):
         if Applications.objects.filter(job_id=job_id, candidate_id=candidate_id):
             return HttpResponse("Already applied")
         
+        
         # if haven't applied yet
-        # prepare to calculate cscore & submit application
+        
+        # checking if inactive job post
         job = Job.objects.filter(id=job_id)[0]
+        if job.expiration < timezone.now():
+            return HttpResponse("Expired job post")
+
+        # prepare to calculate cscore & submit application
         job_description = job.description
         recruiter_id = job.author
         num_candidates = job.numCandidates
@@ -159,7 +165,6 @@ def dashboard_candidate(request):
     
     context = {}
     candidate_id = request.session['uid']
-    keywords = None
 
     # set default post filters
     context["first_name"] = False
@@ -185,7 +190,6 @@ def dashboard_candidate(request):
 
     # if using searchbar or post filters
     if request.method == 'POST':
-        keywords = request.POST.get('post_search_keyword') # check if any search keywords
 
      # if using post filters
         if request.POST.get("filterPosts"):
@@ -262,18 +266,16 @@ def dashboard_candidate(request):
             data = filteredJobs
 
 
-        if keywords: # if using search bar and not post filters
+        if (keywords := request.POST.get('post_search_keyword')): # if using search bar and not post filters
             keywords = set(keywords.lower().split())
             jobData = list(Job.objects.values("id", "title", "company", "description", "skills", "city", "state", "coverImage", "active", "job_type", "numCandidates", "author"))
             data = list(filter(lambda x: not keywords.isdisjoint(set(x['description'].lower().split())), jobData)) # filter out jobs that don't have keyword(s) in job description
-
 
     if request.method == 'GET':
         data = list(Job.objects.filter(
                 active=True,
             ).values("id", "title", "company", "description", "skills", "city", "state", "coverImage", "active", "job_type", "numCandidates", "author"))
         
-
     for item in data:
         item["coverImage"] = item["coverImage"].replace("app/static/", "")
         item["skills"] = [x.strip() for x in item["skills"].split(",")]

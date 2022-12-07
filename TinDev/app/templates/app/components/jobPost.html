@@ -46,6 +46,7 @@
                 <!------ Application submitted & compatibility score calculated on button click ---->
                 <!-- <form method="POST"> -->
                     {% csrf_token %}
+                    {% if job.active %}
                     <button style="display: inline; float:right;" type="button" type="submit" class="btn btn-secondary btn-block post-status-interested" data-catid="{{ job.id }}">
                         <i style="display: inline;" class="fa-solid fa-fire" name="post-status-interested" 
                             value="{{interested}}" {{interestedCheckedStatus}}></i> 
@@ -57,6 +58,11 @@
                             value="{{ uninterested }}" {{uninterestedCheckedStatus}}></i> 
                         <h6>Pass...</h6>
                     </button>
+                    {% else %}
+                    <div class="post-inactive btn btn-block" style="display: inline; float:right;">
+                        <h6>Expired Post</h6>
+                    </div>
+                    {% endif %}
                 <!-- </form> -->
 
             </span>
