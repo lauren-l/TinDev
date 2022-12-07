@@ -40,10 +40,24 @@ Project contributors (sorted alphabetically by last name)
     * Pre-populated database with candidate, recruiter, job, and offer info 
 
 
-* **[Christian Matthew](https://github.com/team-member-2-github)**
-
-  * ... contribution 1 description ...
-  * ... contribution 2 description ...
+* **[Christian Matthew](https://github.com/ChristianMSurya)**
+  * Homepage/Login/logout
+    * Designed the homepage that holds info about TinDev, the login card, and the sign up options
+    * Login function, if logged in successfully, allows username to be access during the session
+    * Logout flushes out session storage used to store login info
+  * Branding
+    * Figma initial [mockup](https://www.figma.com/proto/p58MwVcLHV2GGAXq7cbddX/TinDev-%7C-Paradigms-Project?node-id=28%3A20&scaling=scale-down&page-id=0%3A1)
+    * Branding guideline [documentation](https://docs.google.com/document/d/1JYB6tChzI9_7OUnhwf719cCepFSz9Uk3VzRyYBFnRM0/edit?usp=sharing) created
+    * Created the logomark and wordmark needed for the website branding
+    * Chose color proper palette for the techy vibe of the project
+    * Set up typography (open sans) and button design
+    * Designed the simple nav bar
+    * Created style.css
+  * Create, update, delete job posts
+    * Created a form in forms.py for the create job post page available to recruiters
+    * Allowed update/edit functionality with ModelForm with an initial instance of existing data from the database
+    * Gave permission to the creator of the job posts to edit or delete their post
+    * Disabled the ability for recruiters to edit or delete other people's posts
   
 * **[Yewon Oh](https://github.com/team-member-2-github)**
 
