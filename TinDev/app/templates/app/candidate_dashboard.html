@@ -14,7 +14,6 @@
         integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="{% static '../static/css/style.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static '../static/css/candidate_dashboard.css' %}">
-
     <script src="https://kit.fontawesome.com/fcff164d2d.js" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
@@ -57,9 +56,8 @@
                                 <h5 class="filter-title">Profile</h5>
                                 <div class="form-row">
                                     <div class="align-items-center" style="display:inline">
-                                        <img src="#" class="img-thumbnail">
+                                        <img src="{% static profilePicture %}" class="img-thumbnail">
                                         <p><b>{{first_name}} {{last_name}}</b></p>
-                                        <p>{{github}}</p>
                                         <div id="skills">
                                             <h6>Skills</h6>
                                             {% for skill in skills %}
@@ -95,7 +93,6 @@
                 <div class="search-result-message-div vertical-center difficult-center">
                     <p class="vertical-centercenter search-result-message">No jobs to show</p>
                 </div>
-
                 {% endif %}
             </div>
             
@@ -105,22 +102,6 @@
                     <br/><br/>
                     <form method="POST">
                         {% csrf_token %}
-                        <div class="card-item filter-card">
-                            <article class="card">
-                                <header class="card-header">
-                                    <h6 class="filter-title">Post Filters</h6>
-                                </header>
-                                <div class="filter-content">
-                                    <div class="card-body">
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="post-status-interested"
-                                                value="{{ interested }}" {{interestedCheckedStatus}}>
-                                            <label class="custom-control-label">Interested Only</label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </article>
-                        </div><br />
             <!----- job post filters container on the right hand side ---->
                         <div class="card-item filter-card">
                             <article class="card">

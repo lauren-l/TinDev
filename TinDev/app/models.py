@@ -22,6 +22,7 @@ class Candidate(models.Model):
     education = models.CharField(max_length=50, default="N/A")
     interested = models.CharField(max_length=500, default="")
     disinterested = models.CharField(max_length=500, default="")
+    profilePicture = models.ImageField(upload_to ='app/static/images', default='../../static/images/errorImage.jpg')
     
     
 class Recruiter(models.Model):

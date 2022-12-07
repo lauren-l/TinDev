@@ -1,4 +1,5 @@
 from datetime import datetime
+from django.utils import timezone
 from django.shortcuts import render
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
@@ -90,7 +91,7 @@ def signup_recruiter(request):
         form = RSignUpForm()
     return render(request, 'app/signup_recruiter.html', {'form': form})
 
-# this function demonstrates candate interest & calculates compatibility score upon button click
+# this function demonstrates candidate interest & calculates compatibility score upon button click
 def submit_application(request):
     if request.method == 'GET':
         candidate_id = int(request.session['uid'])
@@ -129,7 +130,7 @@ def submit_application(request):
         experience = max(30, (yoe / (num_candidates + yoe)) * 100)
         cscore = (skill_overlap + experience) // 2
         
-        # create application boject
+        # create application object
         application = Applications.objects.create(job_id=job_id, candidate_id=request.session['uid'], compatibility_score=cscore)
         application.save()
         return HttpResponse("Success")
@@ -144,6 +145,7 @@ def dashboard_candidate(request):
 
     # set default post filters
     context["first_name"] = False
+    context["last_name"] = False
     context["myPosts"] = False
     context["interested"] = False
     context["uninterested"] = False
@@ -205,17 +207,12 @@ def dashboard_candidate(request):
         item["status"] = "Active" if item["active"] else "Inactive"
      
     context["jobs"] = data
-    context["interestedCheckedStatus"] = "checked" if context["interested"] else "unchecked"
-    context["uninterestedCheckedStatus"] = "checked" if context["uninterested"] else "unchecked"
-    context["activeCheckedStatus"] = "checked" if context["active"] else "unchecked"
-    context["inactiveCheckedStatus"] = "checked" if context["inactive"] else "unchecked"
-    context["myPostsCheckedStatus"] = "checked" if context["myPosts"] else "unchecked"
 
-    cand_info = list(Candidate.objects.values("first_name", "last_name", "github", "skills"))
-    context["first_name"] = cand_info[0]["first_name"]
-    context["last_name"] = cand_info[0]["last_name"]
-    context["github"] = cand_info[0]["github"]
-    context["skills"] = cand_info[0]["skills"].split(",")
+    cand_info = list(Candidate.objects.filter(id = candidate_id).values("first_name", "last_name", "skills", "profilePicture"))[0]
+    context["first_name"] = cand_info["first_name"]
+    context["last_name"] = cand_info["last_name"]
+    context["skills"] = list(cand_info["skills"].split(","))
+    context["profilePicture"] = cand_info["profilePicture"].replace("app/static/", "")
 
     return render(request, 'app/candidate_dashboard.html', context=context)
 
@@ -287,16 +284,69 @@ def dashboard_recruiter(request):
     return render(request, 'app/recruiter_dashboard.html', context=context)
 
 def candidate_offers(request):
-    jobData = list(Job.objects.values("title", "company", "description", "skills", "city", "state", "job_type", "expiration"))
-    for item in jobData:
-        item["skills"] = list(item["skills"].split(","))
+    context = {}
+    candidate_id = request.session['uid']
+    print(candidate_id)
 
-    # Need to check for specific account
-    # candData = list(Candidate.objects.values("first_name, last_name, skills, github"))
-    # for item in candData:
-    #     item["skills"] = list(item["skills"].split(","))
+    # get all offers with matching candidate id
+    offers = list(Offers.objects.filter(id = candidate_id).values("job_id", "candidate_id", "recruiter_id", "offerDeadline", "salary", "response", "accepted"))
+    # date__range=["2022-12-01", offers[i]['offerDeadline']]
 
-    return render(request, 'app/candidate_offers.html', {"jobs": jobData})
+    # get job info from offers
+    for i, offer in enumerate(offers):
+        offer_info = list(Job.objects.filter(id = offers[i]['job_id']).values("title", "job_type", "city", "state", "company", "expiration", "active", "author", "coverImage"))[0]
+        offer["title"] = offer_info["title"]
+        offer["job_type"] = offer_info["job_type"]
+        offer["city"] = offer_info["city"]
+        offer["state"] = offer_info["state"]
+        offer["company"] = offer_info["company"]
+        offer["expiration"] = offer_info["expiration"]
+        offer["active"] = offer_info["active"]
+        offer["author"] = offer_info["author"]
+        offer["coverImage"] = offer_info["coverImage"].replace("app/static/", "")
+    
+    print(offers)
+    for i, offer in enumerate(offers):
+        if offer["offerDeadline"] < timezone.now():
+            offers.pop(i)
+            # offer["offerDeadline"] = 'Deadline Passed!'
+
+    context["offers"] = offers
+
+    return render(request, 'app/candidate_offers.html', context=context)
+
+def offer_response(request):
+    if request.method == 'GET':
+        c_id = request.session['uid']
+        job_id = request.GET['jid']
+        
+        offer = Offers.objects.get(id=job_id, candidate_id=c_id)
+        if offer.response == True: 
+            return HttpResponse("Already responded")
+        else:
+            if (request.POST.get('acc') == True):
+                offer.accepted = True
+            else: offer.accepted = False
+            offer.response = True
+        offer.save()
+        
+    #         if request.method == 'GET':
+    #     candidate_id = int(request.session['uid'])
+    #     job_id = request.GET['jid']
+        
+    # accepted = request.POST.get['offer-status-accept']
+
+    # offer = Offers.objects.get(id=job_id, candidate_id=candidate_id)
+    # if offer:
+    #     if offer.response == True: 
+    #         return HttpResponse("Already responded")
+    #     else:
+    #         offer.response = True
+    #         if accepted: offer.accepted = True
+    #         else: offer.accepted = False
+    #     offer.save()
+        
+        return HttpResponse("Success")
 
 def view_applicants(request):
     form = OfferForm()
