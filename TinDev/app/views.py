@@ -108,7 +108,7 @@ def submit_application(request):
         recruiter_id = job.author
         num_candidates = job.numCandidates
         candidate = Candidate.objects.filter(id=candidate_id)[0]
-        skills = candidate.skills.split(",")
+        skills =[x.strip() for x in candidate.skills.split(",")]
         yoe = candidate.yoe
 
         # update num candidates of job
@@ -255,7 +255,6 @@ def dashboard_candidate(request):
                     filteredJobs = []
                 else:
                     interestedJobs = [int(x) for x in interestedJobs.split(",")]
-                    print(f"interested jobs {interestedJobs}")
                     for job in filteredJobs:
                         if job["id"] not in interestedJobs:
                             filteredJobs = [i for i in filteredJobs if not (i['id'] == job["id"])]
@@ -277,14 +276,14 @@ def dashboard_candidate(request):
 
     for item in data:
         item["coverImage"] = item["coverImage"].replace("app/static/", "")
-        item["skills"] = list(item["skills"].split(","))
+        item["skills"] = [x.strip() for x in item["skills"].split(",")]
         item["status"] = "Active" if item["active"] else "Inactive"
 
     context["jobs"] = data
     cand_info = list(Candidate.objects.filter(id = candidate_id).values("first_name", "last_name", "skills", "profilePicture"))[0]
     context["first_name"] = cand_info["first_name"]
     context["last_name"] = cand_info["last_name"]
-    context["skills"] = list(cand_info["skills"].split(","))
+    context["skills"] = [x.strip() for x in cand_info["skills"].split(",")]
     context["profilePicture"] = cand_info["profilePicture"].replace("app/static/", "")
 
     return render(request, 'app/candidate_dashboard.html', context=context)
@@ -300,10 +299,8 @@ def dashboard_recruiter(request):
 
     context = {}
     recruiter_id = request.session['uid']
-    print(recruiter_id)
 
     # set default post fitlers
-    context["myPosts"] = False
     context["active"] = True
     context["inactive"] = False
     context["numCandidates"] = 0
@@ -320,7 +317,6 @@ def dashboard_recruiter(request):
             request.session['job-id'] = request.POST.get("view-applicants")
             return redirect(f'/view_applicants')
         else:
-            context["myPosts"] = False if request.POST.get('my-post') == None else True
             context["active"] = False if request.POST.get('post-status-active') == None else True
             context["inactive"] = False if request.POST.get('post-status-inactive') == None else True
             context["numCandidates"] = request.POST.get('candidateRange')
@@ -342,14 +338,13 @@ def dashboard_recruiter(request):
     else: # no posts (neither active nor inactive)
         data = []
 
-    # filtering data to only include jobs of current user/recruiter
-    if context["myPosts"]:
-        data = list(filter(lambda x: str(x['author']) == str(recruiter_id), data))
+    # filtering data to only include jobs of current user/recruiter:
+    data = list(filter(lambda x: str(x['author']) == str(recruiter_id), data))
     
     for item in data: # clean job info in context
         item["numCandidates"] = str(item["numCandidates"])
         item["coverImage"] = item["coverImage"].replace("app/static/", "")
-        item["skills"] = list(item["skills"].split(","))
+        item["skills"] = [x.strip() for x in item["skills"].split(",")]
         item["status"] = "Active" if item["active"] else "Inactive"
         # disable view applicants button if user is not the author of the post
         item["viewApplicants"] = "disabled" if str(item['author']) != str(recruiter_id) else ""
@@ -357,9 +352,7 @@ def dashboard_recruiter(request):
     
     context["jobs"] = data
     context["activeCheckedStatus"] = "checked" if context["active"] else "unchecked"
-    context["inactiveCheckedStatus"] = "checked" if context["inactive"] else "unchecked"
-    context["myPostsCheckedStatus"] = "checked" if context["myPosts"] else "unchecked"
-    
+    context["inactiveCheckedStatus"] = "checked" if context["inactive"] else "unchecked"    
 
     # prevents user from editing or deleting other recruiters' job posts
 
@@ -368,7 +361,6 @@ def dashboard_recruiter(request):
 def candidate_offers(request):
     context = {}
     id = request.session['uid']
-    print(id)
 
     # get all offers with matching candidate id
     offers = list(Offers.objects.filter(candidate_id = id).values("job_id", "candidate_id", "recruiter_id", "offerDeadline", "salary", "response", "accepted"))
@@ -387,7 +379,6 @@ def candidate_offers(request):
         offer["author"] = offer_info["author"]
         offer["coverImage"] = offer_info["coverImage"].replace("app/static/", "")
     
-    print(offers)
     for i, offer in enumerate(offers):
         if offer["offerDeadline"] < timezone.now():
             offers.pop(i)
@@ -434,15 +425,15 @@ def view_applicants(request):
             expiration = form.cleaned_data["expirationDate"]
 
         
-        try:
-            # if an offer exists for the job for the applicant, update the entry
-            existingOffer = Offers.objects.get(job_id=jobId, candidate_id=applicant_id)
-            existingOffer.salary=Nsalary
-            existingOffer.offerDeadline= expiration
-            existingOffer.save()
-        except: # if no preexisting offer, create new offer
-            b1 = Offers.objects.create(job_id=jobId, candidate_id=applicant_id, recruiter_id=request.session["uid"],offerDeadline=expiration, salary=Nsalary, response=False, accepted=False)
-            b1.save()
+            try:
+                # if an offer exists for the job for the applicant, update the entry
+                existingOffer = Offers.objects.get(job_id=jobId, candidate_id=applicant_id)
+                existingOffer.salary=Nsalary
+                existingOffer.offerDeadline= expiration
+                existingOffer.save()
+            except: # if no preexisting offer, create new offer
+                b1 = Offers.objects.create(job_id=jobId, candidate_id=applicant_id, recruiter_id=request.session["uid"],offerDeadline=expiration, salary=Nsalary, response=False, accepted=False)
+                b1.save()
             
     # get and parse data for all candidates who submitted an application
     for applicant in applications:
@@ -454,7 +445,7 @@ def view_applicants(request):
         applicant["education"] = applicant_info[0]["education"]
         applicant["github"] = applicant_info[0]["github"]
         applicant["zip"] = applicant_info[0]["zip"]
-        applicant["skills"] = applicant_info[0]["skills"].split(",")
+        applicant["skills"] = [x.strip() for x in applicant_info[0]["skills"].split(",")]
         try:
             offer = Offers.objects.get(candidate_id = applicant["candidate_id"], job_id=jobId)
             print(offer)
