@@ -2,13 +2,13 @@ from datetime import datetime
 from django.shortcuts import render
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, UpdateView
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.models import User, auth
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.http import HttpResponseRedirect
-from .forms import RSignUpForm, CSignUpForm, OfferForm, CreatePosts
+from .forms import RSignUpForm, CSignUpForm, OfferForm, CreatePosts, UpdatePosts
 from .models import *
 from django.db import connection
 
@@ -364,20 +364,25 @@ def create_posts(request):
         
     return render(request, 'app/create_posts.html', {'form': form})
 
-def update_posts(request):
-    if request.method == 'POST':
-        form = CreatePosts(request.POST)
-        if form.is_valid():
-            # create candidate object
-            b1 = Job.objects.update(author=request.session['full_name'], title=form.cleaned_data['title'], job_type=form.cleaned_data['job_type'], city=form.cleaned_data['city'], state=form.cleaned_data['state'], skills=form.cleaned_data['skills'], description=form.cleaned_data['description'], company=form.cleaned_data['company'], expiration=form.cleaned_data['expiration'], active=form.cleaned_data['active'], numCandidates=0)
+def update_posts(request, pk):
+    # model = Job
+    # template = 'update_posts.html'
+    # fields = ['author', 'title', 'job_type', 'city', 'state', 'skills', 'description', 'active']
 
-            # redirect to a new URL:
-            return HttpResponseRedirect('/update_posts')
+    if request.method == 'POST':
+        job_post=Job.objects.get(pk=pk)
+        form = UpdatePosts(request.POST, instance=job_post)
+        if form.is_valid():
+            # update the post
+            form.save()
+            # redirect to same update page URL:
+            return HttpResponseRedirect('/update_posts/'+str(pk))
             
     else:
-        form = CreatePosts(initial={"title":request.session['last_job'].title})
+        job_post=Job.objects.get(pk=pk)
+        form = UpdatePosts(instance=job_post)
+        return render(request, 'app/update_posts.html', {'form': form})  
         
-    return render(request, 'app/update_posts.html', {'form': form})
 
 def delete_posts(request, pk):
     Job.objects.filter(pk=pk).delete()

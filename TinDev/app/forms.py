@@ -1,5 +1,6 @@
 import datetime
 from django import forms
+from django.forms import ModelForm
 from django.core.validators import *
 from django.core.exceptions import ValidationError
 from .models import *
@@ -135,19 +136,4 @@ class CreatePosts(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.label_suffix = ""  # Removes : as label suffix
-
-
-class UpdatePosts(forms.Form):
-    title = forms.CharField(max_length=50, label='Title *', validators=[validate_slug, MaxLengthValidator(50)])
-    job_type = forms.CharField(max_length=50, label='Job Type *', validators=[validate_slug, MaxLengthValidator(50)])
-    city = forms.CharField(max_length=50, label='City *', validators=[validate_slug, MaxLengthValidator(50)])
-    state = forms.CharField(max_length=30, label='State *', validators=[validate_slug, MaxLengthValidator(50)])
-    skills = forms.MultipleChoiceField(choices = SKILL_CHOICES, label="Skills *")
-    description = forms.CharField(label='Description *', validators=[validate_slug, MaxLengthValidator(50)])
-    company = forms.CharField(max_length=50, label='Company *', validators=[validate_slug, MaxLengthValidator(50)])
-    expiration = forms.DateTimeField(label='Expiration Date (yyyy-mm-dd hh:mm:ss) *')
-    active = forms.BooleanField(label='Active *')
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.label_suffix = ""  # Removes : as label suffix    
+   
