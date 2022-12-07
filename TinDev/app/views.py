@@ -380,12 +380,18 @@ def candidate_offers(request):
         offer["active"] = offer_info["active"]
         offer["author"] = offer_info["author"]
         offer["coverImage"] = offer_info["coverImage"].replace("app/static/", "")
+        if offer["response"]:
+            if offer["accepted"]:
+                offer["offer_status"] = "Accepted"
+            else:
+                offer["offer_status"] = "Declined"
+        else:
+            offer["offer_status"] = "Offer Extended"
     
     for i, offer in enumerate(offers):
         if offer["offerDeadline"] < timezone.now():
             offers.pop(i)
             # offer["offerDeadline"] = 'Deadline Passed!'
-
 
     context["offers"] = offers
 
@@ -394,9 +400,8 @@ def candidate_offers(request):
 def offer_response(request):
     if request.method == 'GET':
         c_id = request.session['uid']
-        job_id = request.GET['jid']
-        
-        offer = Offers.objects.get(id=job_id, candidate_id=c_id)
+        jobId = request.GET['jid']
+        offer = Offers.objects.get(job_id=jobId, candidate_id=c_id)
         if offer.response == True: 
             return HttpResponse("Already responded")
         else:
