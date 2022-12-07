@@ -63,7 +63,20 @@ Project contributors (sorted alphabetically by last name)
   
 * **[Yewon Oh](https://github.com/team-member-2-github)**
 
-  * ... contribution 1 description ...
-  * ... contribution 2 description ...
+  * Candidate Dashboard
+    * Designed wireframe for candidate UI
+    * Built and implemented template for candidate dashboard page, consisting of 1) profile 2) job postings 3) filters
+    * Created and implemented job post components with html and Django
+      * Implemented backend functionality to render card with desired information
+      * Implemented view all job post functionality
+    * Connected front and back end in views
+    * Implemented 'Smash' and 'Pass' buttons to express interest in a job or mark as not interested
+    * Updated models with candidate profile pictures
+  * Candidate Offers
+    * Created offer template with html and Django
+      * Implemented backend functionality to render card with desired information
+    * Implemented ajax in views to automatically update offer response without reloading page
+    * Accept or reject offers restricted by expiry/offer deadline
+  
 
 
