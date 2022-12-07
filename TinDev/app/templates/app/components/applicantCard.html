@@ -12,6 +12,12 @@
             <p class="card-text">{{ applicant.bio }}</p> <!-- not required field (can be null) -->
             <!------ Additional Applicant Info ---->
             <span>
+                <h6 class="align-top" style="display: inline">Offer Status:</h6>
+                <p class="align-top" style="display: inline">{{ applicant.offer_status }}</p>
+                <!-- compatibility scores are calculated at show of interest -->
+            </span>
+            <br>
+            <span>
                 <h6 class="align-top" style="display: inline">Compatibility:</h6>
                 <p class="align-top" style="display: inline">{{ applicant.compatibility_score }}%</p>
                 <!-- compatibility scores are calculated at show of interest -->

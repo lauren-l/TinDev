@@ -5,12 +5,13 @@
     <div class="card-body">
         <!------ Job Cover Image ---->
         <div style="width:15%; float:left">
-            <img src="{% static offer.coverImage %}" style="display:flex; margin: 10px" width="100" height="100"/>
+            <img src="{% static offer.coverImage %}" style="display:flex; margin: 10px" width="100" height="100" />
             <br>
         </div>
         <div style="width:85%; float:right">
             <span class="job-title">
-                <h3 class="card-title align-middle" style="display:inline; padding-right: 1rem;"> {{ offer.title }} </h3>
+                <h3 class="card-title align-middle" style="display:inline; padding-right: 1rem;"> {{ offer.title }}
+                </h3>
                 <h6 class="align-bottom" style="display:inline">{{ offer.company }}</h6>
                 <!------ Drop down menu for individual post options ---->
             </span>
@@ -19,13 +20,14 @@
             <p class="card-text"><b>Salary:</b> ${{ offer.salary }}/yr</p>
             <p class="card-text"><b>Location:</b> {{ offer.city }}, {{ offer.state }}</p>
             <p class="card-text" style="color: red;"><b>Deadline:</b> {{ offer.offerDeadline }}</p>
-            
+
             <form method="POST">
                 {% csrf_token %}
-                <button type="button" id="offer-status-accept" class="btn btn-secondary btn-block offer-status-accept" 
-                    data-catid="{{ offer.job_id }}"><i class="fa-solid fa-check "></i> Accept</button> 
-                <button type="button" id="offer-status-reject" class="btn btn-secondary btn-block offer-status-reject" 
-                    data-catid="{{ offer.job_id }}"><i class="fa-solid fa-x"></i> Reject</button>
+                <button type="button" id="offer-status-accept" class="btn btn-secondary btn-block offer-status-accept"
+                    data-catid="{{ offer.job_id }}" name="accept-button"><i
+                        class="fa-solid fa-check "></i>Accept</button>
+                <button type="button" id="offer-status-reject" class="btn btn-secondary btn-block offer-status-reject"
+                    data-catid="{{ offer.job_id }}"><i class="fa-solid fa-x"></i>Reject</button>
             </form>
         </div>
     </div>
@@ -34,59 +36,34 @@
 <!------ ajax script to respond offer response without reloaded page ----->
 
 <script type="text/javascript">
-    $('.offer-status-accept').click(function(){
+
+    $('.offer-status-accept').click(function () {
         var jid;
         jid = $(this).attr("data-catid");
         $.ajax(
-        {
-            type:"GET",
-            url: "/offer_response",
-            data:{
+            {
+                type: "GET",
+                url: "/offer_response",
+                data: {
+                    accept: true,
                     jid: jid,
-            },
-            success: function( data ) {}
-        })
+                },
+                success: function (data) { }
+            })
     });
 
-    $('.offer-status-accept').click(function(){
+    $('.offer-status-reject').click(function () {
         var jid;
         jid = $(this).attr("data-catid");
         $.ajax(
-        {
-            type:"POST",
-            url: "/offer_response",
-            data:{
-                    acc: true,
-            },
-            success: function( data ) {}
-        })
-    });
-
-    $('.offer-status-reject').click(function(){
-        var jid;
-        jid = $(this).attr("data-catid");
-        $.ajax(
-        {
-            type:"GET",
-            url: "/offer_response",
-            data:{
+            {
+                type: "GET",
+                url: "/offer_response",
+                data: {
+                    accept: false,
                     jid: jid,
-            },
-            success: function( data ) {}
-        })
-    });
-
-    $('.offer-status-reject').click(function(){
-        var jid;
-        jid = $(this).attr("data-catid");
-        $.ajax(
-        {
-            type:"POST",
-            url: "/offer_response",
-            data:{
-                acc: false,
-            },
-            success: function( data ) {}
-        })
+                },
+                success: function (data) { }
+            })
     });
 </script>

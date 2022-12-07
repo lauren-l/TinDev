@@ -5,7 +5,7 @@ from .views import UpdatePosts
 app_name = 'app'
 
 urlpatterns = [
-    # path('', views.HomeView.as_view(), name='index'),
+    path('', views.home),
     path('home/', views.home),
     path('logout', views.logout_user),
     path('signup_candidate', views.signup_candidate),
@@ -19,5 +19,4 @@ urlpatterns = [
     path('create_posts', views.create_posts),
     path('delete_posts/<int:pk>', views.delete_posts),
     path('update_posts/<int:pk>', views.update_posts, name='update_posts')
-    # path('update_posts/<int:pk>', UpdatePosts.as_view(), name='update_posts')
 ]

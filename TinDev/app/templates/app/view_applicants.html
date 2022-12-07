@@ -37,6 +37,7 @@
     </nav>
 </head>
 <!------ applicant information section ---->
+
 <body style="background-color:rgb(253, 253, 253)">
     <main>
         <div style="padding-top:2rem; float:left; display:inline">
@@ -45,7 +46,8 @@
                     onclick="location.href='/recruiter_dashboard'">
             </div>
             <div>
-                <div class=" post-content"> <!------ display applicants based on filtering done in views ---->
+                <div class=" post-content">
+                    <!------ display applicants based on filtering done in views ---->
                     {% for applicant in applicants %}
                     {% include './components/applicantCard.html' with applicant=applicant form=form%}
                     {% endfor %}
@@ -53,7 +55,6 @@
             </div>
         </div>
     </main>
-    <hr>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>

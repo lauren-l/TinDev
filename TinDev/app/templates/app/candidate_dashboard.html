@@ -3,7 +3,8 @@
 
 <!DOCTYPE html>
 <html lang="en">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script> <!------ ajax jquery for updating model objects without reloading page ---->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<!------ ajax jquery for updating model objects without reloading page ---->
 
 <head>
     <meta charset="UTF-8">
@@ -72,7 +73,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <!----- job posts container on left hand side ---->
             <div class="col-8">
                 <div class="jobs-container">
@@ -84,7 +85,8 @@
                         <button type="submit" id="search-button"
                             class="btn btn-primary btn-sm align-middle">Search</button>
                     </form>
-                    <br/><br/> <!----- jobs get filered in views ---->
+                    <br /><br />
+                    <!----- jobs get filered in views ---->
                     {% for job in jobs %}
                     {% include './components/jobPost.html' with job=job %}
                     {% endfor %}
@@ -95,14 +97,14 @@
                 </div>
                 {% endif %}
             </div>
-            
+
             <!----- job posts container in the middle ---->
             <div class="col">
                 <div class="filter-container">
-                    <br/><br/>
+                    <br /><br />
                     <form method="POST">
                         {% csrf_token %}
-            <!----- job post filters container on the right hand side ---->
+                        <!----- job post filters container on the right hand side ---->
                         <div class="card-item filter-card">
                             <article class="card">
                                 <header class="card-header">
@@ -111,13 +113,32 @@
                                 <div class="filter-content">
                                     <div class="card-body">
                                         <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" name="post-status-active"
-                                                value="{{ active }}" {{activeCheckedStatus}}>
+                                            <input type="checkbox" class="custom-control-input" id="Check1"
+                                                name="myPosts" value="{{ myPost }}" {{myPostsCheckedStatus}}>
+                                            <label class="custom-control-label">Saved Posts Only</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </article>
+                        </div><br />
+                        <div class="card-item">
+                            <article class="card">
+                                <header class="card-header">
+                                    <h6 class="filter-title">Job Post Status</h6>
+                                </header>
+                                <div class="filter-content">
+                                    <div class="card-body">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input"
+                                                name="post-status-active" id="post-status-active" value="{{ active }}"
+                                                {{activeCheckedStatus}}>
                                             <label class="custom-control-label">Active</label>
                                         </div>
                                         <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" name="post-status-inactive"
-                                                value="{{ inactive }}" {{inactiveCheckedStatus}}>
+                                            <input type="checkbox" class="custom-control-input"
+                                                name="post-status-inactive" name="post-status-inactive"
+                                                value="{{ inactive }}" {{inactiveCheckedStatus}} value="{{ inactive }}"
+                                                {{inactiveCheckedStatus}}>
                                             <label class="custom-control-label">Inactive</label>
                                         </div>
                                     </div>
@@ -127,29 +148,54 @@
                         <div class="card-item">
                             <article class="card">
                                 <header class="card-header">
+                                    <h6 class="filter-title">Type</h6>
+                                </header>
+                                <div class="filter-content">
+                                    <div class="card-body">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input"
+                                                name="post-status-part-time" id="post-status-part-time"
+                                                value="{{ partTime }}" {{partTimeCheckedStatus}}>
+                                            <label class="custom-control-label">Part Time</label>
+                                        </div>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input"
+                                                name="post-status-full-time" id="post-status-full-time"
+                                                value="{{ fullTime }}" {{fullTimeCheckedStatus}}>
+                                            <label class="custom-control-label">Full Time</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </article>
+                        </div><br />
+                        <div class="card-item">
+                            <article class="card">
+                                <header class="card-header">
                                     <h6 class="filter-title">Job Location</h6>
                                 </header>
                                 <div class="filter-content">
                                     <div class="card-body">
                                         <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="post-status-active">
+                                            <input type="checkbox" class="custom-control-input" name="post-loc-SF"
+                                                id="post-loc-SF" value="{{ locSF }}" {{SFCheckedStatus}}>
                                             <label class="custom-control-label">San Francisco</label>
                                         </div>
                                         <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input"
-                                                id="post-status-inactive">
+                                            <input type="checkbox" class="custom-control-input" id="post-loc-NY"
+                                                name="post-loc-NY" value="{{ locNY }}" {{NYCheckedStatus}}>
                                             <label class="custom-control-label">New York</label>
                                         </div>
                                         <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input"
-                                                id="post-status-inactive">
+                                            <input type="checkbox" class="custom-control-input" id="post-loc-Au"
+                                                name="post-loc-Au" value="{{ locAu }}" {{AuCheckedStatus}}>
                                             <label class="custom-control-label">Austin</label>
                                         </div>
                                     </div>
                                 </div>
                             </article>
                         </div><br />
-                        <input class="btn btn-primary" type="submit" value="Filter" style="width:100%">
+                        <input class="btn btn-primary" name="filterPosts" type="submit" value="Filter"
+                            style="width:100%">
                     </form>
                 </div>
             </div>

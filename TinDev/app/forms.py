@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime, timezone
 from django import forms
 from django.forms import ModelForm
 from django.core.validators import *
@@ -107,12 +107,20 @@ class CSignUpForm(forms.Form):
         super().__init__(*args, **kwargs)
         self.label_suffix = ""  # Removes : as label suffix
 
+
+def check_date_past(data):
+    if data <= datetime.now(timezone.utc):
+        raise forms.ValidationError("The date cannot be in the past!")
+    return data
+
 # form for recruiter offer to candidate
 class OfferForm(forms.Form):
     salary =  forms.IntegerField(label="Yearly Salary")
     expirationDate = forms.DateTimeField(
         input_formats = ['%d-%m-%yT%H:%M'],
-        initial=datetime.datetime.now,
+        initial=datetime.now,
+        label="Expiration Date",
+        validators=[check_date_past],
         widget = forms.DateTimeInput(
             attrs={
                 'type': 'datetime-local',
@@ -122,6 +130,8 @@ class OfferForm(forms.Form):
     )
     salary.widget.attrs.update({'class':'form-control input', 'required':'required'})
 
+
+
 class CreatePosts(forms.Form):
     title = forms.CharField(max_length=50, required=True, label='Title *', validators=[validate_slug, MaxLengthValidator(50)])
     job_type = forms.CharField(max_length=50, required=True, label='Job Type *', validators=[validate_slug, MaxLengthValidator(50)])
@@ -130,7 +140,17 @@ class CreatePosts(forms.Form):
     skills = forms.MultipleChoiceField(choices = SKILL_CHOICES, required=True, label="Skills *")
     description = forms.CharField(required=True, label='Description *', validators=[validate_slug, MaxLengthValidator(50)])
     company = forms.CharField(max_length=50, required=True, label='Company *', validators=[validate_slug, MaxLengthValidator(50)])
-    expiration = forms.DateTimeField(required=True, label='Expiration Date (yyyy-mm-dd hh:mm:ss) *')
+    expiration = forms.DateTimeField(
+        input_formats = ['%d-%m-%yT%H:%M'],
+        initial=datetime.now,
+        validators=[check_date_past],
+        widget = forms.DateTimeInput(
+            attrs={
+                'type': 'datetime-local',
+                'class': 'form-control input',
+                'required':'required'},
+            format='%d-%m-%yT%H:%M')
+    )
     active = forms.BooleanField(label='Active')
 
     def __init__(self, *args, **kwargs):
