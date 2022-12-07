@@ -131,7 +131,7 @@ class CreatePosts(forms.Form):
     description = forms.CharField(required=True, label='Description *', validators=[validate_slug, MaxLengthValidator(50)])
     company = forms.CharField(max_length=50, required=True, label='Company *', validators=[validate_slug, MaxLengthValidator(50)])
     expiration = forms.DateTimeField(required=True, label='Expiration Date (yyyy-mm-dd hh:mm:ss) *')
-    active = forms.BooleanField(required=True, label='Active *')
+    active = forms.BooleanField(label='Active')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
