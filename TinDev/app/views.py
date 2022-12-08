@@ -514,5 +514,23 @@ def update_posts(request, pk):
         
 
 def delete_posts(request, pk):
+
+    # delete the offers and applications for that job
+    Offers.objects.filter(job_id=pk).delete()
+    Applications.objects.filter(job_id=pk).delete()
+
+    apps = list(Applications.objects.filter(job_id=pk).values("candidate_id"))
+    # this removes the job id from all the interested candidates' interest column
+    for app in apps:
+        cand = int(app['candidate_id'])
+        ints = Candidate.objects.filter(id=cand).values("interested")
+        ints = list(ints[0]['interested'].split(','))
+        ints.remove(str(pk))
+        ints = ','.join(ints)
+        Candidate.objects.filter(id=cand).update(interested=ints)
+        print(Candidate.objects.filter(id=cand).values("interested"))
+
+    # delete the job post
     Job.objects.filter(pk=pk).delete()
+
     return HttpResponseRedirect('/recruiter_dashboard')
