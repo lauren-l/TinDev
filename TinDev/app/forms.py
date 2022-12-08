@@ -139,13 +139,13 @@ class OfferForm(forms.Form):
 
 
 class CreatePosts(forms.Form):
-    title = forms.CharField(max_length=50, required=True, label='Title *', validators=[validate_slug, MaxLengthValidator(50)])
-    job_type = forms.CharField(max_length=50, required=True, label='Job Type *', validators=[validate_slug, MaxLengthValidator(50)])
-    city = forms.CharField(max_length=50, required=True, label='City *', validators=[validate_slug, MaxLengthValidator(50)])
-    state = forms.CharField(max_length=30, required=True, label='State *', validators=[validate_slug, MaxLengthValidator(50)])
+    title = forms.CharField(max_length=50, required=True, label='Title *')
+    job_type = forms.CharField(max_length=50, required=True, label='Job Type *')
+    city = forms.CharField(max_length=50, required=True, label='City *')
+    state = forms.CharField(max_length=30, required=True, label='State *')
     skills = forms.MultipleChoiceField(choices = SKILL_CHOICES, required=True, label="Skills *")
-    description = forms.CharField(required=True, label='Description *', validators=[validate_slug, MaxLengthValidator(50)])
-    company = forms.CharField(max_length=50, required=True, label='Company *', validators=[validate_slug, MaxLengthValidator(50)])
+    description = forms.CharField(required=True, label='Description *')
+    company = forms.CharField(max_length=50, required=True, label='Company *')
     expiration = forms.DateTimeField(
         input_formats = ['%d-%m-%yT%H:%M'],
         initial=datetime.now,
